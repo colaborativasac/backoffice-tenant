@@ -1,0 +1,6 @@
+export { default as Toolbar } from './Toolbar.vue'
+export { default as ToolbarActions } from './ToolbarActions.vue'
+export { default as ToolbarBreadcrumbs } from './ToolbarBreadcrumbs.vue'
+export { default as ToolbarHeading } from './ToolbarHeading.vue'
+export { default as ToolbarTitle } from './ToolbarTitle.vue'
+export { default as ToolbarDescription } from './ToolbarDescription.vue'
