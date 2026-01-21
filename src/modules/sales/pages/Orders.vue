@@ -16,7 +16,7 @@ import {
         <ToolbarDescription>Manage your orders efficiently</ToolbarDescription>
       </ToolbarHeading>
       <ToolbarActions>
-        <Button variant="primary">New Order</Button>
+        <Button>New Order</Button>
       </ToolbarActions>
     </Toolbar>
   </Container>

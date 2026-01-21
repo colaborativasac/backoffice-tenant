@@ -8,15 +8,25 @@ import {
   ToolbarTitle,
 } from '@/shared/components/common/toolbar'
 import { CalendarRangeUncontroller } from '@/shared/components/common/calendar'
+
 import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Megaphone } from 'lucide-vue-next'
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  CircleCheck,
+  FileClock,
+  Flag,
+  ListVideo,
+  ShieldAlert,
+  TicketPercent,
+} from 'lucide-vue-next'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArtistTable } from '@/modules/dashboard/components/tables'
 
 const cards = [
   {
@@ -24,36 +34,42 @@ const cards = [
     title: 'Por iniciar',
     description: 'Se ha registrado el evento',
     value: 0,
+    icon: ListVideo,
   },
   {
     id: 2,
     title: 'Publicado',
     description: 'Evento publicado',
     value: 70,
+    icon: Flag,
   },
   {
     id: 3,
     title: 'En liquidación',
     description: 'En liquidación',
     value: 15,
+    icon: TicketPercent,
   },
   {
     id: 4,
     title: 'Finalizado',
     description: 'Evento finalizado',
     value: 45,
+    icon: CircleCheck,
   },
   {
     id: 5,
     title: 'Retenido - en verificación',
     description: 'Retenido - en verificación',
     value: 3,
+    icon: ShieldAlert,
   },
   {
     id: 6,
     title: 'Pendiente de contrato',
     description: 'Pendiente de contrato',
     value: 1,
+    icon: FileClock,
   },
 ]
 </script>
@@ -70,19 +86,30 @@ const cards = [
       </ToolbarActions>
     </Toolbar>
   </Container>
-  <Container>
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <Card v-for="card in cards" :key="card.id" class="@container/card">
+  <Container variant="fixed">
+    <div class="grid grid-cols-3 gap-4">
+      <Item v-for="card in cards" :key="card.id" variant="outline">
+        <ItemMedia>
+          <component :is="card.icon" class="size-5" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>{{ card.title }}</ItemTitle>
+          <ItemDescription class="text-sm">{{ card.description }}</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <div class="text-2xl tabular-nums font-semibold">{{ card.value }}</div>
+        </ItemActions>
+      </Item>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mt-8">
+      <Card>
         <CardHeader>
-          <CardDescription>{{ card.title }}</CardDescription>
-          <CardTitle class="text-3xl tabular-nums">{{ card.value }}</CardTitle>
-          <CardAction>
-            <Megaphone class="size-5 text-muted-foreground/80" />
-          </CardAction>
+          <CardTitle>Artistas con más eventos</CardTitle>
         </CardHeader>
-        <CardFooter>{{ card.description }}</CardFooter>
+        <CardContent class="px-0">
+          <ArtistTable />
+        </CardContent>
       </Card>
     </div>
-    <div class="grid grid-cols-2 gap-4"></div>
   </Container>
 </template>

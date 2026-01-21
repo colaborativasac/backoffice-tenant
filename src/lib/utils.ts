@@ -1,6 +1,8 @@
+import type { Updater } from '@tanstack/vue-table'
 import type { ClassValue } from 'clsx'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import type { Ref } from 'vue'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -61,4 +63,16 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  */
 export function generateId(): string {
   return Math.random().toString(36).substring(2, 9)
+}
+
+/**
+ * Utility function to update Vue ref values
+ * Works with both direct values and updater functions from TanStack Table
+ *
+ * @param updaterOrValue - Either a direct value or a function that receives the current value
+ * @param ref - The Vue ref to update
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
+  ref.value = typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue
 }

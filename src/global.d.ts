@@ -10,6 +10,16 @@ declare module 'vue-router' {
   }
 }
 
+declare module '@tanstack/vue-table' {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    headerTitle?: string
+    headerClassName?: string
+    cellClassName?: string
+    skeleton?: () => VNode
+    expandedContent?: (row: TData) => VNode
+  }
+}
+
 export type MiddlewareFunction = (
   to: ReouteLocationNormalized,
   from: ReouteLocationNormalized,
