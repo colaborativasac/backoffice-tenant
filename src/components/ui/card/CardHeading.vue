@@ -2,15 +2,15 @@
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 
-export interface CardActionProps {
+export interface CardHeadingProps {
   class?: HTMLAttributes['class']
 }
 
-const props = defineProps<CardActionProps>()
+const props = defineProps<CardHeadingProps>()
 </script>
 
 <template>
-  <div data-slot="card-action" :class="cn('flex items-center gap-2.5', props.class)">
+  <div data-slot="card-heading" :class="cn('space-y-1', props.class)">
     <slot />
   </div>
 </template>
