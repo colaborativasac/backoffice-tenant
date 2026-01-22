@@ -18,7 +18,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 import { valueUpdater } from '@/lib/utils'
-import { DataGrid, DataGridContainer, DataGridTable } from '@/shared/components/common/data-grid'
+import { DataGrid, DataGridTable } from '@/shared/components/common/data-grid'
 import { columns } from './columns/artist.columns'
 import type { Artist } from '@/modules/dashboard/models/dashboard.models'
 
@@ -145,8 +145,6 @@ const recordCount = computed(() => data.value.length)
       columnsPinnable: true,
     }"
   >
-    <DataGridContainer :rounded="false">
-      <DataGridTable />
-    </DataGridContainer>
+    <DataGridTable />
   </DataGrid>
 </template>
