@@ -6,7 +6,6 @@ export const columns: ColumnDef<Artist>[] = [
   {
     accessorKey: 'image_iconn',
     header: '',
-    meta: { cellClassName: 'border-sizing' },
     cell: ({ row }) => {
       return h(
         Avatar,
@@ -22,7 +21,10 @@ export const columns: ColumnDef<Artist>[] = [
         },
       )
     },
-    size: 40,
+    size: 64,
+    meta: {
+      cellClassName: '',
+    },
   },
   {
     accessorKey: 'name',

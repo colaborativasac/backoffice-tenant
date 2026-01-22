@@ -8,6 +8,7 @@ import {
   ToolbarTitle,
 } from '@/shared/components/common/toolbar'
 import { CalendarRangeUncontroller } from '@/shared/components/common/calendar'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 import {
   Item,
@@ -25,7 +26,7 @@ import {
   ShieldAlert,
   TicketPercent,
 } from 'lucide-vue-next'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardTable, CardHeader, CardHeading, CardTitle } from '@/components/ui/card'
 import { ArtistTable } from '@/modules/dashboard/components/tables'
 
 const cards = [
@@ -104,11 +105,16 @@ const cards = [
     <div class="grid grid-cols-2 gap-4 mt-8">
       <Card>
         <CardHeader>
-          <CardTitle>Artistas con más eventos</CardTitle>
+          <CardHeading>
+            <CardTitle>Artistas con más eventos</CardTitle>
+          </CardHeading>
         </CardHeader>
-        <CardContent class="px-0">
-          <ArtistTable />
-        </CardContent>
+        <CardTable>
+          <ScrollArea>
+            <ArtistTable />
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </CardTable>
       </Card>
     </div>
   </Container>
