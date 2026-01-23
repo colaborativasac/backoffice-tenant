@@ -8,20 +8,23 @@ import {
   ToolbarDescription,
 } from '@/shared/components/common/toolbar'
 import { EventsTable } from '@/modules/events/components/tables'
+import { Card } from '@/components/ui/card'
 </script>
 <template>
   <Container variant="fixed">
     <Toolbar>
       <ToolbarHeading>
         <ToolbarTitle />
-        <ToolbarDescription>Manage your orders efficiently</ToolbarDescription>
+        <ToolbarDescription>Manage your events efficiently</ToolbarDescription>
       </ToolbarHeading>
       <ToolbarActions>
-        <Button>New Order</Button>
+        <div>lorem</div>
       </ToolbarActions>
     </Toolbar>
   </Container>
-  <Container variant="fixed" class="mt-6">
-    <EventsTable />
+  <Container>
+    <Card>
+      <EventsTable />
+    </Card>
   </Container>
 </template>

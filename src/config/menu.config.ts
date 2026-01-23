@@ -1,5 +1,5 @@
 import type { MenuConfig } from '@/core/models/menu.models'
-import { ChartNoAxesCombined, Gauge, Users2 } from 'lucide-vue-next'
+import { Calendars, ChartNoAxesCombined, Gauge, Users2 } from 'lucide-vue-next'
 
 export const MENU_SIDEBAR: MenuConfig = [
   {
@@ -14,19 +14,54 @@ export const MENU_SIDEBAR: MenuConfig = [
     children: [
       {
         title: 'Pedidos',
-        path: '/sales/orders',
+        path: '/orders',
       },
       {
         title: 'Códigos de descuentos',
-        path: '/sales/discount-codes',
+        path: '/discount-codes',
       },
       {
         title: 'Conciliaciones',
-        path: '/sales/reconciliations',
+        path: '/reconciliations',
       },
       {
         title: 'Validar boletos',
-        path: '/sales/ticket-validation',
+        path: '/ticket-validation',
+      },
+    ],
+  },
+  {
+    title: 'Eventos',
+    icon: Calendars,
+    rootPath: '/events',
+    children: [
+      {
+        title: 'Eventos',
+        path: '/events',
+      },
+      {
+        title: 'Autorizaciones',
+        path: '/authorizations',
+      },
+      {
+        title: 'Sliders',
+        path: '/sliders',
+      },
+      {
+        title: 'Categorías',
+        path: '/categories',
+      },
+      {
+        title: 'Tipo de entradas',
+        path: '/ticket-types',
+      },
+      {
+        title: 'Artistas',
+        path: '/artists',
+      },
+      {
+        title: 'Ubicaciones',
+        path: '/locations',
       },
     ],
   },

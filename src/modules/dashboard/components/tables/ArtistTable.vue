@@ -1,33 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type {
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  RowSelectionState,
-  ExpandedState,
-} from '@tanstack/vue-table'
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getExpandedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  useVueTable,
-} from '@tanstack/vue-table'
-import { valueUpdater } from '@/lib/utils'
+import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 import { DataGrid, DataGridTable } from '@/shared/components/common/data-grid'
 import { columns } from './columns/artist.columns'
 import type { Artist } from '@/modules/dashboard/models/dashboard.models'
-
-const sorting = ref<SortingState>([])
-const columnFilters = ref<ColumnFiltersState>([])
-const columnVisibility = ref<VisibilityState>({})
-const rowSelection = ref<RowSelectionState>({})
-const expanded = ref<ExpandedState>({})
-const globalFilter = ref('')
 
 const data = ref<Artist[]>([
   {
@@ -89,44 +65,9 @@ const table = useVueTable({
   },
   columns,
   getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  getExpandedRowModel: getExpandedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
-  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-  onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
-  onGlobalFilterChange: (updaterOrValue) => valueUpdater(updaterOrValue, globalFilter),
-  state: {
-    get sorting() {
-      return sorting.value
-    },
-    get columnFilters() {
-      return columnFilters.value
-    },
-    get columnVisibility() {
-      return columnVisibility.value
-    },
-    get rowSelection() {
-      return rowSelection.value
-    },
-    get expanded() {
-      return expanded.value
-    },
-    get globalFilter() {
-      return globalFilter.value
-    },
-  },
-  enableRowSelection: true,
-  initialState: {
-    pagination: {
-      pageSize: 5,
-    },
-  },
+  state: {},
+  enableRowSelection: false,
+  initialState: {},
 })
 
 const recordCount = computed(() => data.value.length)
@@ -142,7 +83,6 @@ const recordCount = computed(() => data.value.length)
       cellBorder: true,
       headerBackground: true,
       headerBorder: true,
-      columnsPinnable: true,
     }"
   >
     <DataGridTable />

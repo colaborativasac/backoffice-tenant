@@ -39,7 +39,6 @@ export interface LaravelRequestParams {
   per_page: number
   sort_by?: string
   sort_direction?: 'asc' | 'desc'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filters?: Record<string, any>
+  filters?: Record<string, unknown>
   search?: string
 }

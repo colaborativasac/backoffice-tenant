@@ -27,7 +27,7 @@ import {
   TicketPercent,
 } from 'lucide-vue-next'
 import { Card, CardTable, CardHeader, CardHeading, CardTitle } from '@/components/ui/card'
-import { ArtistTable } from '@/modules/dashboard/components/tables'
+import { ArtistTable, OrganizersTable } from '@/modules/dashboard/components/tables'
 
 const cards = [
   {
@@ -112,6 +112,19 @@ const cards = [
         <CardTable>
           <ScrollArea>
             <ArtistTable />
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </CardTable>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardHeading>
+            <CardTitle>Organizadores con más eventos</CardTitle>
+          </CardHeading>
+        </CardHeader>
+        <CardTable>
+          <ScrollArea>
+            <OrganizersTable />
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </CardTable>

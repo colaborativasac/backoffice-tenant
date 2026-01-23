@@ -1,5 +1,6 @@
 import { authRoutes } from '@/modules/auth/auth.routes'
 import { dashboardRoutes } from '@/modules/dashboard/dashboard.routes'
+import { eventsRoutes } from '@/modules/events/events.route'
 import { salesRoutes } from '@/modules/sales/sales.routes'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -21,6 +22,7 @@ const routes: RouteRecordRaw[] = [
       },
       ...dashboardRoutes,
       ...salesRoutes,
+      ...eventsRoutes,
     ],
   },
   {

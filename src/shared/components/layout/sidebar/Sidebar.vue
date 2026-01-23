@@ -31,7 +31,6 @@ const route = useRoute()
 
 const isActive = (to: string | undefined) => {
   if (!to) return false
-  console.log('Checking active for route:', route.path, 'against', to)
   return route.path === to || route.path.startsWith(to + '/')
 }
 </script>
@@ -90,7 +89,15 @@ const isActive = (to: string | undefined) => {
                   <SidebarMenuSub>
                     <SidebarMenuSubItem v-for="subItem in item.children" :key="subItem.title">
                       <SidebarMenuSubButton as-child :is-active="isActive(subItem.path)">
-                        <router-link :to="subItem.path!">
+                        <router-link v-if="item.rootPath" :to="`${item.rootPath}${subItem.path}`">
+                          <span>{{ subItem.title }}</span>
+                        </router-link>
+                        <router-link
+                          v-if="subItem.external"
+                          :to="subItem.path!"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <span>{{ subItem.title }}</span>
                         </router-link>
                       </SidebarMenuSubButton>
