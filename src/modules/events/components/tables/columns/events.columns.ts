@@ -1,33 +1,66 @@
+import { ref } from 'vue'
+import type { ColDef } from 'ag-grid-community'
 import type { Event } from '@/modules/events/models/events.models'
-import type { ColumnDef } from '@tanstack/vue-table'
-
-export const columns: ColumnDef<Event>[] = [
+export const columns = ref<ColDef<Event>[]>([
   {
-    accessorKey: 'code',
-    header: 'Código',
+    field: 'sale_amount',
+    headerName: 'Venta',
   },
   {
-    accessorKey: 'title_small',
-    header: 'Título',
+    field: 'poster',
+    headerName: 'Poster',
   },
   {
-    accessorKey: 'fecha_evento',
-    header: 'Fecha del evento',
+    field: 'id',
+    headerName: 'ID',
+    editable: true,
   },
   {
-    accessorKey: 'price_normal',
-    header: 'Precio normal',
+    field: 'title_small',
+    headerName: 'Título',
+    tooltipValueGetter: (params) => params.value,
+    minWidth: 250,
   },
   {
-    accessorKey: 'stock',
-    header: 'Stock',
+    field: 'fecha_evento',
+    headerName: 'Fecha',
   },
   {
-    accessorKey: 'active',
-    header: 'Activo',
+    field: 'sale_amount',
+    headerName: 'Monto',
   },
   {
-    accessorKey: 'status',
-    header: 'Estado',
+    field: 'active',
+    headerName: 'Publicado',
   },
-]
+  {
+    field: 'featured',
+    headerName: 'Slider',
+  },
+  {
+    field: 'featured',
+    headerName: 'Destacar',
+  },
+  {
+    field: 'notes_count',
+    headerName: 'Notas',
+  },
+  {
+    headerName: 'Servicios',
+  },
+  {
+    headerName: 'Documentos',
+  },
+  {
+    headerName: 'Conc.',
+  },
+  {
+    headerName: 'Estado',
+  },
+  {
+    headerName: 'Ejecutivo',
+  },
+  {
+    headerName: 'Opciones',
+  },
+])

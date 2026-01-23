@@ -1,0 +1,67 @@
+.ag-root-wrapper {
+  --ag-wrapper-border: 0;
+  --ag-wrapper-border-radius: 0;
+
+  --ag-font-family: var(--font-sans);
+
+  --ag-border-color: var(--color-border);
+
+  /* global */
+  --ag-inherited-accent-color: var(--color-primary);
+
+  /* header */
+  --ag-border-color: var(--color-border);
+  --ag-header-text-color: var(--color-accent-foreground);
+  --ag-header-background-color: var(--color-sidebar);
+  /* cell */
+  --ag-cell-text-color: var(--color-foreground);
+  --ag-range-selection-border-color: transparent;
+  /* row */
+  --ag-row-hover-color: var(--color-accent);
+  border-bottom-left-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+
+  /* input */
+  /* --ag-input-focus-border: var(--color-primary); */
+  --ag-input-focus-text-color: var(--color-foreground);
+  --ag-input-focus-background-color: transparent;
+  .ag-header {
+    @apply bg-muted/40;
+  }
+
+  .ag-cell {
+    @apply tabular-nums;
+  }
+  .ag-cell-inline-editing {
+    @apply border-input! shadow-none!;
+  }
+  .ag-cell-inline-editing {
+    @apply border-none! p-px;
+  }
+  .ag-input-field-input {
+    @apply bg-input/30! border-input! tabular-nums focus:shadow-none!;
+  }
+}
+
+.dark .ag-root-wrapper {
+  --ag-border-color: var(--color-border);
+  /* --ag-inherited-accent-color: var(--color-border); */
+  /* background */
+  --ag-data-background-color: transparent;
+  --ag-background-color: transparent;
+  /* header */
+  --ag-border-color: var(--color-border);
+  --ag-header-text-color: var(--color-accent-foreground);
+  --ag-header-background-color: var(--color-sidebar);
+
+  /* cell */
+  --ag-cell-text-color: var(--color-foreground);
+  --ag-range-selection-border-color: transparent;
+  /* row */
+  --ag-row-hover-color: var(--color-accent);
+  /* columns */
+  --ag-column-border-color: var(--color-border);
+
+  /* inputs */
+  --ag-input-text-color: var(--color-foreground);
+}

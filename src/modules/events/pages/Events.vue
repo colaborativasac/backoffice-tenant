@@ -8,7 +8,9 @@ import {
   ToolbarDescription,
 } from '@/shared/components/common/toolbar'
 import { EventsTable } from '@/modules/events/components/tables'
-import { Card } from '@/components/ui/card'
+import { Card, CardTitle, CardHeader, CardHeading, CardTable } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-vue-next'
 </script>
 <template>
   <Container variant="fixed">
@@ -18,13 +20,23 @@ import { Card } from '@/components/ui/card'
         <ToolbarDescription>Manage your events efficiently</ToolbarDescription>
       </ToolbarHeading>
       <ToolbarActions>
-        <div>lorem</div>
+        <Button>
+          <Plus />
+          Crear Evento
+        </Button>
       </ToolbarActions>
     </Toolbar>
   </Container>
   <Container>
     <Card>
-      <EventsTable />
+      <CardHeader>
+        <CardHeading>
+          <CardTitle>Eventos</CardTitle>
+        </CardHeading>
+      </CardHeader>
+      <CardTable>
+        <EventsTable />
+      </CardTable>
     </Card>
   </Container>
 </template>
