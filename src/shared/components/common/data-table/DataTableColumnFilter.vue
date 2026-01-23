@@ -23,13 +23,13 @@ interface FilterOption {
   icon?: Component
 }
 
-interface DataGridColumnFilterProps {
+interface DataTableColumnFilterProps {
   column?: Column<TData, TValue>
   title?: string
   options: FilterOption[]
 }
 
-const props = defineProps<DataGridColumnFilterProps>()
+const props = defineProps<DataTableColumnFilterProps>()
 
 const facets = computed(() => props.column?.getFacetedUniqueValues())
 

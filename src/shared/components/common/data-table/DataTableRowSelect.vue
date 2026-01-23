@@ -3,12 +3,12 @@ import type { Row } from '@tanstack/vue-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 
-interface DataGridRowSelectProps {
+interface DataTableRowSelectProps {
   row: Row<TData>
   size?: 'sm' | 'default' | 'lg'
 }
 
-const props = withDefaults(defineProps<DataGridRowSelectProps>(), {
+const props = withDefaults(defineProps<DataTableRowSelectProps>(), {
   size: 'sm',
 })
 </script>

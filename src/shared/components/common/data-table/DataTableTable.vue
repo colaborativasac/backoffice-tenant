@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData extends object">
 import { computed, type CSSProperties } from 'vue'
 import { FlexRender, type Column, type Header, type Row, type Cell } from '@tanstack/vue-table'
-import { useDataGrid } from '.'
+import { useDataTable } from '.'
 import { cn } from '@/lib/utils'
 
 // Spacing variants using computed classes
@@ -28,16 +28,16 @@ function getPinningStyles<T>(column: Column<T>): CSSProperties {
   }
 }
 
-const { table, isLoading, props: gridProps } = useDataGrid<TData>()
+const { table, isLoading, props: tableProps } = useDataTable<TData>()
 
 const pagination = computed(() => table.getState().pagination)
 
 const headerCellSpacing = computed(() =>
-  gridProps.tableLayout?.dense ? headerCellSpacingClasses.dense : headerCellSpacingClasses.default,
+  tableProps.tableLayout?.dense ? headerCellSpacingClasses.dense : headerCellSpacingClasses.default,
 )
 
 const bodyCellSpacing = computed(() =>
-  gridProps.tableLayout?.dense ? bodyCellSpacingClasses.dense : bodyCellSpacingClasses.default,
+  tableProps.tableLayout?.dense ? bodyCellSpacingClasses.dense : bodyCellSpacingClasses.default,
 )
 
 // Helper functions for cell classes
@@ -50,14 +50,14 @@ function getHeaderCellClasses(header: Header<TData, unknown>) {
   return cn(
     'relative h-10 text-left rtl:text-right align-middle font-normal text-accent-foreground [&:has([role=checkbox])]:pe-0',
     headerCellSpacing.value,
-    gridProps.tableLayout?.cellBorder && 'border-e',
-    gridProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
-    gridProps.tableLayout?.columnsPinnable &&
+    tableProps.tableLayout?.cellBorder && 'border-e',
+    tableProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
+    tableProps.tableLayout?.columnsPinnable &&
       column.getCanPin() &&
       '[&:not([data-pinned]):has(+[data-pinned])_div.cursor-col-resize:last-child]:opacity-0 [&[data-last-col=left]_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=left][data-last-col=left]]:border-e! [&[data-pinned=right]:last-child_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=right][data-last-col=right]]:border-s! [&[data-pinned][data-last-col]]:border-border data-pinned:bg-muted/90 data-pinned:backdrop-blur-sm',
     header.column.columnDef.meta?.headerClassName,
     column.getIndex() === 0 || column.getIndex() === header.headerGroup.headers.length - 1
-      ? gridProps.tableClassNames?.edgeCell
+      ? tableProps.tableClassNames?.edgeCell
       : '',
   )
 }
@@ -65,10 +65,10 @@ function getHeaderCellClasses(header: Header<TData, unknown>) {
 function getHeaderCellStyle(header: Header<TData, unknown>): CSSProperties {
   const { column } = header
   return {
-    ...(gridProps.tableLayout?.width === 'fixed' && {
+    ...(tableProps.tableLayout?.width === 'fixed' && {
       width: `${header.getSize()}px`,
     }),
-    ...(gridProps.tableLayout?.columnsPinnable && column.getCanPin() && getPinningStyles(column)),
+    ...(tableProps.tableLayout?.columnsPinnable && column.getCanPin() && getPinningStyles(column)),
   }
 }
 
@@ -93,14 +93,14 @@ function getBodyCellClasses(cell: Cell<TData, unknown>) {
   return cn(
     'align-middle',
     bodyCellSpacing.value,
-    gridProps.tableLayout?.cellBorder && 'border-e',
-    gridProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
+    tableProps.tableLayout?.cellBorder && 'border-e',
+    tableProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
     cell.column.columnDef.meta?.cellClassName,
-    gridProps.tableLayout?.columnsPinnable &&
+    tableProps.tableLayout?.columnsPinnable &&
       column.getCanPin() &&
       '[&[data-pinned=left][data-last-col=left]]:border-e! [&[data-pinned=right][data-last-col=right]]:border-s! [&[data-pinned][data-last-col]]:border-border data-pinned:bg-background/90 data-pinned:backdrop-blur-sm',
     column.getIndex() === 0 || column.getIndex() === row.getVisibleCells().length - 1
-      ? gridProps.tableClassNames?.edgeCell
+      ? tableProps.tableClassNames?.edgeCell
       : '',
   )
 }
@@ -108,7 +108,7 @@ function getBodyCellClasses(cell: Cell<TData, unknown>) {
 function getBodyCellStyle(cell: Cell<TData, unknown>): CSSProperties {
   const { column } = cell
   return {
-    ...(gridProps.tableLayout?.columnsPinnable && column.getCanPin() && getPinningStyles(column)),
+    ...(tableProps.tableLayout?.columnsPinnable && column.getCanPin() && getPinningStyles(column)),
   }
 }
 
@@ -126,8 +126,8 @@ function getBodyCellDataAttributes(cell: Cell<TData, unknown>) {
 
 // Row click handler
 function handleRowClick(row: Row<TData>) {
-  if (gridProps.onRowClick) {
-    gridProps.onRowClick(row.original)
+  if (tableProps.onRowClick) {
+    tableProps.onRowClick(row.original)
   }
 }
 
@@ -150,9 +150,9 @@ function handleResetSize(column: Column<TData>) {
     :class="
       cn(
         'w-full align-middle caption-bottom text-left rtl:text-right text-foreground font-normal text-sm',
-        !gridProps.tableLayout?.columnsDraggable && 'border-separate border-spacing-0',
-        gridProps.tableLayout?.width === 'fixed' ? 'table-fixed' : 'table-auto',
-        gridProps.tableClassNames?.base,
+        !tableProps.tableLayout?.columnsDraggable && 'border-separate border-spacing-0',
+        tableProps.tableLayout?.width === 'fixed' ? 'table-fixed' : 'table-auto',
+        tableProps.tableClassNames?.base,
       )
     "
   >
@@ -161,8 +161,8 @@ function handleResetSize(column: Column<TData>) {
       :class="
         cn(
           '[&_tr:last-child]:border-0',
-          gridProps.tableClassNames?.header,
-          gridProps.tableLayout?.headerSticky && gridProps.tableClassNames?.headerSticky,
+          tableProps.tableClassNames?.header,
+          tableProps.tableLayout?.headerSticky && tableProps.tableClassNames?.headerSticky,
         )
       "
     >
@@ -172,11 +172,11 @@ function handleResetSize(column: Column<TData>) {
         :class="
           cn(
             'bg-muted/40',
-            gridProps.tableLayout?.headerBorder && '[&>th]:border-b',
-            gridProps.tableLayout?.cellBorder && '*:last:border-e-0',
-            gridProps.tableLayout?.stripped && 'bg-transparent',
-            gridProps.tableLayout?.headerBackground === false && 'bg-transparent',
-            gridProps.tableClassNames?.headerRow,
+            tableProps.tableLayout?.headerBorder && '[&>th]:border-b',
+            tableProps.tableLayout?.cellBorder && '*:last:border-e-0',
+            tableProps.tableLayout?.stripped && 'bg-transparent',
+            tableProps.tableLayout?.headerBackground === false && 'bg-transparent',
+            tableProps.tableClassNames?.headerRow,
           )
         "
       >
@@ -194,7 +194,7 @@ function handleResetSize(column: Column<TData>) {
           />
           <!-- Resize Handle -->
           <div
-            v-if="gridProps.tableLayout?.columnsResizable && header.column.getCanResize()"
+            v-if="tableProps.tableLayout?.columnsResizable && header.column.getCanResize()"
             class="absolute top-0 h-full w-4 cursor-col-resize user-select-none touch-none -end-2 z-10 flex justify-center before:absolute before:w-px before:inset-y-0 before:bg-border before:-translate-x-px"
             @dblclick="handleResetSize(header.column)"
             @mousedown="(e) => handleResize(header, e)"
@@ -206,7 +206,7 @@ function handleResetSize(column: Column<TData>) {
 
     <!-- Row Spacer -->
     <tbody
-      v-if="gridProps.tableLayout?.stripped || !gridProps.tableLayout?.rowBorder"
+      v-if="tableProps.tableLayout?.stripped || !tableProps.tableLayout?.rowBorder"
       aria-hidden="true"
       class="h-2"
     />
@@ -216,29 +216,29 @@ function handleResetSize(column: Column<TData>) {
       :class="
         cn(
           '[&_tr:last-child]:border-0',
-          gridProps.tableLayout?.rowRounded &&
+          tableProps.tableLayout?.rowRounded &&
             '[&_td:first-child]:rounded-s-lg [&_td:last-child]:rounded-e-lg',
-          gridProps.tableClassNames?.body,
+          tableProps.tableClassNames?.body,
         )
       "
     >
       <!-- Skeleton Loading -->
-      <template v-if="gridProps.loadingMode === 'skeleton' && isLoading && pagination?.pageSize">
+      <template v-if="tableProps.loadingMode === 'skeleton' && isLoading && pagination?.pageSize">
         <tr
           v-for="(_, rowIndex) in Array.from({ length: pagination.pageSize })"
           :key="`skeleton-${rowIndex}`"
           :class="
             cn(
               'hover:bg-muted/40 data-[state=selected]:bg-muted/50',
-              gridProps.onRowClick && 'cursor-pointer',
-              !gridProps.tableLayout?.stripped &&
-                gridProps.tableLayout?.rowBorder &&
+              tableProps.onRowClick && 'cursor-pointer',
+              !tableProps.tableLayout?.stripped &&
+                tableProps.tableLayout?.rowBorder &&
                 'border-b border-border [&:not(:last-child)>td]:border-b',
-              gridProps.tableLayout?.cellBorder && '*:last:border-e-0',
-              gridProps.tableLayout?.stripped &&
+              tableProps.tableLayout?.cellBorder && '*:last:border-e-0',
+              tableProps.tableLayout?.stripped &&
                 'odd:bg-muted/90 hover:bg-transparent odd:hover:bg-muted',
               table.options.enableRowSelection && '*:first:relative',
-              gridProps.tableClassNames?.bodyRow,
+              tableProps.tableClassNames?.bodyRow,
             )
           "
         >
@@ -249,8 +249,8 @@ function handleResetSize(column: Column<TData>) {
               cn(
                 'align-middle',
                 bodyCellSpacing,
-                gridProps.tableLayout?.cellBorder && 'border-e',
-                gridProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
+                tableProps.tableLayout?.cellBorder && 'border-e',
+                tableProps.tableLayout?.columnsResizable && column.getCanResize() && 'truncate',
                 column.columnDef.meta?.cellClassName,
               )
             "
@@ -271,15 +271,15 @@ function handleResetSize(column: Column<TData>) {
             :class="
               cn(
                 'hover:bg-muted/40 data-[state=selected]:bg-muted/50',
-                gridProps.onRowClick && 'cursor-pointer',
-                !gridProps.tableLayout?.stripped &&
-                  gridProps.tableLayout?.rowBorder &&
+                tableProps.onRowClick && 'cursor-pointer',
+                !tableProps.tableLayout?.stripped &&
+                  tableProps.tableLayout?.rowBorder &&
                   'border-b border-border [&:not(:last-child)>td]:border-b',
-                gridProps.tableLayout?.cellBorder && '*:last:border-e-0',
-                gridProps.tableLayout?.stripped &&
+                tableProps.tableLayout?.cellBorder && '*:last:border-e-0',
+                tableProps.tableLayout?.stripped &&
                   'odd:bg-muted/90 hover:bg-transparent odd:hover:bg-muted',
                 table.options.enableRowSelection && '*:first:relative',
-                gridProps.tableClassNames?.bodyRow,
+                tableProps.tableClassNames?.bodyRow,
               )
             "
             @click="handleRowClick(row)"
@@ -297,7 +297,7 @@ function handleResetSize(column: Column<TData>) {
           <!-- Expanded Row -->
           <tr
             v-if="row.getIsExpanded()"
-            :class="cn(gridProps.tableLayout?.rowBorder && '[&:not(:last-child)>td]:border-b')"
+            :class="cn(tableProps.tableLayout?.rowBorder && '[&:not(:last-child)>td]:border-b')"
           >
             <td :colspan="row.getVisibleCells().length">
               <component
@@ -320,7 +320,7 @@ function handleResetSize(column: Column<TData>) {
       <!-- Empty State -->
       <tr v-else>
         <td :colspan="table.getAllColumns().length" class="text-center text-muted-foreground py-6">
-          {{ gridProps.emptyMessage || 'No hay datos disponibles' }}
+          {{ tableProps.emptyMessage || 'No hay datos disponibles' }}
         </td>
       </tr>
     </tbody>

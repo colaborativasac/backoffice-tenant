@@ -2,7 +2,7 @@ import { ref, computed, watch, type Ref } from 'vue'
 import type { ColumnFiltersState, SortingState, PaginationState } from '@tanstack/vue-table'
 import type { LaravelPaginatedResponse, LaravelRequestParams } from '@/core/models/api.models'
 
-export interface UseDataGridLaravelOptions<T> {
+export interface UseDataTableLaravelOptions<T> {
   /** Function to fetch data from API */
   fetchFn: (params: LaravelRequestParams) => Promise<LaravelPaginatedResponse<T>>
   /** Initial page size */
@@ -15,7 +15,7 @@ export interface UseDataGridLaravelOptions<T> {
   transform?: (data: T[]) => T[]
 }
 
-export function useDataGridLaravel<T extends object>(options: UseDataGridLaravelOptions<T>) {
+export function useDataTableLaravel<T extends object>(options: UseDataTableLaravelOptions<T>) {
   const {
     fetchFn,
     initialPageSize = 20,
@@ -201,7 +201,7 @@ export function useDataGridLaravel<T extends object>(options: UseDataGridLaravel
 }
 
 export function createLaravelTableOptions<T extends object>(
-  laravelState: ReturnType<typeof useDataGridLaravel<T>>,
+  laravelState: ReturnType<typeof useDataTableLaravel<T>>,
 ) {
   return {
     manualPagination: true,

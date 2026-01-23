@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
-import { DataGrid, DataGridPagination, DataGridTable } from '@/shared/components/common/data-grid'
 import { columns } from './columns/events.columns'
-import { useDataGridLaravel } from '@/shared/components/common/data-grid/use-data-grid-laravel'
+import { useDataTableLaravel } from '@/shared/components/common/data-table/use-data-table-laravel'
 import type { EventQueryParams, Event } from '../../models/events.models'
 import { eventsApi } from '../../endpoints/events.api'
 import { watch } from 'vue'
@@ -20,7 +19,7 @@ const {
   onColumnFiltersChange,
   onPaginationChange,
   error,
-} = useDataGridLaravel<Event>({
+} = useDataTableLaravel<Event>({
   fetchFn: async (params: EventQueryParams) => {
     const queryParams = {
       page: params.page || 1,

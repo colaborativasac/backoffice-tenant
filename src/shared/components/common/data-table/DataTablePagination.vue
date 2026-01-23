@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDataGrid } from '.'
+import { useDataTable } from '.'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<DataGridPaginationProps>(), {
   info: '{from} - {to} of {count}',
 })
 
-const { table, recordCount, isLoading } = useDataGrid()
+const { table, recordCount, isLoading } = useDataTable()
 
 const btnBaseClasses = 'size-7 p-0 text-sm'
 const btnArrowClasses = `${btnBaseClasses} rtl:transform rtl:rotate-180`

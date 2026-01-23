@@ -2,7 +2,7 @@ import { inject } from 'vue'
 import type { ColumnFiltersState, SortingState, Table } from '@tanstack/vue-table'
 
 // Types
-export interface DataGridTableLayout {
+export interface DataTableLayout {
   dense?: boolean
   cellBorder?: boolean
   rowBorder?: boolean
@@ -20,7 +20,7 @@ export interface DataGridTableLayout {
   rowsDraggable?: boolean
 }
 
-export interface DataGridTableClassNames {
+export interface DataTableClassNames {
   base?: string
   header?: string
   headerRow?: string
@@ -31,7 +31,7 @@ export interface DataGridTableClassNames {
   edgeCell?: string
 }
 
-export interface DataGridProps<TData extends object> {
+export interface DataTableProps<TData extends object> {
   table: Table<TData>
   recordCount: number
   isLoading?: boolean
@@ -39,18 +39,18 @@ export interface DataGridProps<TData extends object> {
   loadingMessage?: string
   emptyMessage?: string
   onRowClick?: (row: TData) => void
-  tableLayout?: DataGridTableLayout
-  tableClassNames?: DataGridTableClassNames
+  tableLayout?: DataTableLayout
+  tableClassNames?: DataTableClassNames
 }
 
-export interface DataGridContext<TData extends object> {
-  props: DataGridProps<TData>
+export interface DataTableContext<TData extends object> {
+  props: DataTableProps<TData>
   table: Table<TData>
   recordCount: number
   isLoading: boolean
 }
 
-export type DataGridApiFetchParams = {
+export type DataTableApiFetchParams = {
   pageIndex: number
   pageSize: number
   sorting?: SortingState
@@ -58,7 +58,7 @@ export type DataGridApiFetchParams = {
   searchQuery?: string
 }
 
-export type DataGridApiResponse<T> = {
+export type DataTableApiResponse<T> = {
   data: T[]
   empty: boolean
   pagination: {
@@ -67,7 +67,7 @@ export type DataGridApiResponse<T> = {
   }
 }
 
-export type DataGridRequestParams = {
+export type DataTableRequestParams = {
   pageIndex: number
   pageSize: number
   sorting?: SortingState
@@ -75,13 +75,13 @@ export type DataGridRequestParams = {
 }
 
 // Injection key
-export const DATA_GRID_KEY = Symbol('data-grid')
+export const DATA_TABLE_KEY = Symbol('data-table')
 
-export function useDataGrid<TData extends object = object>() {
-  const context = inject<DataGridContext<TData>>(DATA_GRID_KEY)
+export function useDataTable<TData extends object = object>() {
+  const context = inject<DataTableContext<TData>>(DATA_TABLE_KEY)
 
   if (!context) {
-    throw new Error('useDataGrid must be used within a DataGrid component')
+    throw new Error('useDataTable must be used within a DataTable component')
   }
 
   return context

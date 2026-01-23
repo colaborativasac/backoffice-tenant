@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
 
-interface DataGridContainerProps {
+interface DataTableContainerProps {
   border?: boolean
   rounded?: boolean
   class?: string
 }
 
-const props = withDefaults(defineProps<DataGridContainerProps>(), {
+const props = withDefaults(defineProps<DataTableContainerProps>(), {
   border: true,
   rounded: true,
 })

@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDataGrid } from '.'
+import { useDataTable } from '.'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 
-interface DataGridRowSelectAllProps {
+interface DataTableRowSelectAllProps {
   size?: 'sm' | 'default' | 'lg'
 }
 
-const props = withDefaults(defineProps<DataGridRowSelectAllProps>(), {
+const props = withDefaults(defineProps<DataTableRowSelectAllProps>(), {
   size: 'sm',
 })
 
-const { table, recordCount, isLoading } = useDataGrid()
+const { table, recordCount, isLoading } = useDataTable()
 
 const isAllSelected = computed(() => table.getIsAllPageRowsSelected())
 const isSomeSelected = computed(() => table.getIsSomePageRowsSelected())

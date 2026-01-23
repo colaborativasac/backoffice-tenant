@@ -1,14 +1,14 @@
 <script setup lang="ts" generic="TData extends object">
 import { provide, computed, reactive } from 'vue'
 import {
-  DATA_GRID_KEY,
-  type DataGridProps,
-  type DataGridTableLayout,
-  type DataGridTableClassNames,
+  DATA_TABLE_KEY,
+  type DataTableProps,
+  type DataTableLayout,
+  type DataTableClassNames,
 } from '.'
 
 // Props
-const props = withDefaults(defineProps<DataGridProps<TData>>(), {
+const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   isLoading: false,
   loadingMode: 'skeleton',
   loadingMessage: 'Cargando...',
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<DataGridProps<TData>>(), {
 })
 
 // Default values
-const defaultTableLayout: DataGridTableLayout = {
+const defaultTableLayout: DataTableLayout = {
   dense: false,
   cellBorder: false,
   rowBorder: true,
@@ -36,7 +36,7 @@ const defaultTableLayout: DataGridTableLayout = {
   rowsDraggable: false,
 }
 
-const defaultTableClassNames: DataGridTableClassNames = {
+const defaultTableClassNames: DataTableClassNames = {
   base: '',
   header: '',
   headerRow: '',
@@ -79,7 +79,7 @@ const context = reactive({
 })
 
 // Provide context
-provide(DATA_GRID_KEY, context)
+provide(DATA_TABLE_KEY, context)
 </script>
 
 <template>

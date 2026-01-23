@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
-import { DataGrid, DataGridTable } from '@/shared/components/common/data-grid'
+import { DataTable, DataTableTable } from '@/shared/components/common/data-table'
 import { columns } from './columns/artist.columns'
 import type { Artist } from '@/modules/dashboard/models/dashboard.models'
 
@@ -73,7 +73,7 @@ const table = useVueTable({
 const recordCount = computed(() => data.value.length)
 </script>
 <template>
-  <DataGrid
+  <DataTable
     :table="table"
     :record-count="recordCount"
     :is-loading="isLoading"
@@ -85,6 +85,6 @@ const recordCount = computed(() => data.value.length)
       headerBorder: true,
     }"
   >
-    <DataGridTable />
-  </DataGrid>
+    <DataTableTable />
+  </DataTable>
 </template>

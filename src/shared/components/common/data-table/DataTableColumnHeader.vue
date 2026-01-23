@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData extends object, TValue">
 import { computed, type VNode } from 'vue'
 import type { Column } from '@tanstack/vue-table'
-import { useDataGrid } from '.'
+import { useDataTable } from '.'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,14 +30,14 @@ import {
   Settings2,
 } from 'lucide-vue-next'
 
-interface DataGridColumnHeaderProps {
+interface DataTableColumnHeaderProps {
   column: Column<TData, TValue>
   title?: string
   pinnable?: boolean
   visibility?: boolean
 }
 
-const props = withDefaults(defineProps<DataGridColumnHeaderProps>(), {
+const props = withDefaults(defineProps<DataTableColumnHeaderProps>(), {
   title: '',
   pinnable: true,
   visibility: false,
@@ -48,7 +48,7 @@ const slots = defineSlots<{
   filter?: () => VNode
 }>()
 
-const { isLoading, table, props: gridProps, recordCount } = useDataGrid<TData>()
+const { isLoading, table, props: tableProps, recordCount } = useDataTable<TData>()
 
 // Move column function
 function moveColumn(direction: 'left' | 'right') {
@@ -97,16 +97,16 @@ const hasFilter = computed(() => !!slots.filter)
 
 const showControls = computed(
   () =>
-    gridProps.tableLayout?.columnsMovable ||
-    (gridProps.tableLayout?.columnsVisibility && props.visibility) ||
-    (gridProps.tableLayout?.columnsPinnable && props.column.getCanPin()) ||
+    tableProps.tableLayout?.columnsMovable ||
+    (tableProps.tableLayout?.columnsVisibility && props.visibility) ||
+    (tableProps.tableLayout?.columnsPinnable && props.column.getCanPin()) ||
     hasFilter.value,
 )
 
 const showSortButton = computed(
   () =>
     props.column.getCanSort() ||
-    (gridProps.tableLayout?.columnsResizable && props.column.getCanResize()),
+    (tableProps.tableLayout?.columnsResizable && props.column.getCanResize()),
 )
 </script>
 
@@ -175,7 +175,7 @@ const showSortButton = computed(
         />
 
         <!-- Pinning -->
-        <template v-if="gridProps.tableLayout?.columnsPinnable && column.getCanPin()">
+        <template v-if="tableProps.tableLayout?.columnsPinnable && column.getCanPin()">
           <DropdownMenuItem @click="column.pin(column.getIsPinned() === 'left' ? false : 'left')">
             <ArrowLeftToLine class="size-3.5" aria-hidden="true" />
             <span class="grow">Fijar a la izquierda</span>
@@ -192,7 +192,7 @@ const showSortButton = computed(
         </template>
 
         <!-- Moving -->
-        <template v-if="gridProps.tableLayout?.columnsMovable">
+        <template v-if="tableProps.tableLayout?.columnsMovable">
           <DropdownMenuSeparator />
           <DropdownMenuItem
             @click="moveColumn('left')"
@@ -211,7 +211,7 @@ const showSortButton = computed(
         </template>
 
         <!-- Visibility Sub-menu -->
-        <template v-if="gridProps.tableLayout?.columnsVisibility && visibility">
+        <template v-if="tableProps.tableLayout?.columnsVisibility && visibility">
           <DropdownMenuSeparator v-if="column.getCanSort() || column.getCanPin() || hasFilter" />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
@@ -241,7 +241,7 @@ const showSortButton = computed(
 
     <!-- Unpin Button -->
     <Button
-      v-if="gridProps.tableLayout?.columnsPinnable && column.getCanPin() && column.getIsPinned()"
+      v-if="tableProps.tableLayout?.columnsPinnable && column.getCanPin() && column.getIsPinned()"
       variant="ghost"
       class="-me-1 size-7 rounded-md"
       @click="column.pin(false)"

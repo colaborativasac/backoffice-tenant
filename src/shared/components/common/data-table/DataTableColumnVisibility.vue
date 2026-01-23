@@ -9,12 +9,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-interface DataGridColumnVisibilityProps {
+interface DataTableColumnVisibilityProps {
   table: Table<TData>
 }
 
-const props = defineProps<DataGridColumnVisibilityProps>()
-
+const props = defineProps<DataTableColumnVisibilityProps>()
 const columns = computed(() =>
   props.table
     .getAllColumns()

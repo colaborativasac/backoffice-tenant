@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { getCoreRowModel, getPaginationRowModel, useVueTable } from '@tanstack/vue-table'
-import { DataGrid, DataGridTable } from '@/shared/components/common/data-grid'
+import { DataTable, DataTableTable } from '@/shared/components/common/data-table'
 import { columns } from './columns/organizers.columns'
 import type { Organizers } from '../../models/dashboard.models'
 
@@ -45,7 +45,7 @@ const isLoading = ref(false)
 </script>
 
 <template>
-  <DataGrid
+  <DataTable
     :table="table"
     :record-count="recordCount"
     :is-loading="isLoading"
@@ -57,6 +57,6 @@ const isLoading = ref(false)
       headerBorder: true,
     }"
   >
-    <DataGridTable />
-  </DataGrid>
+    <DataTableTable />
+  </DataTable>
 </template>

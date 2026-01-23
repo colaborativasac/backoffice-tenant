@@ -1,6 +1,6 @@
 import type { Table } from '@tanstack/vue-table'
 
-export interface DataGridTableLayout {
+export interface DataTableLayout {
   dense?: boolean
   cellBorder?: boolean
   rowBorder?: boolean
@@ -18,7 +18,7 @@ export interface DataGridTableLayout {
   rowsDraggable?: boolean
 }
 
-export interface DataGridTableClassNames {
+export interface DataTableClassNames {
   base?: string
   header?: string
   headerRow?: string
@@ -29,7 +29,7 @@ export interface DataGridTableClassNames {
   edgeCell?: string
 }
 
-export interface DataGridProps<TData extends object> {
+export interface DataTableProps<TData extends object> {
   table: Table<TData>
   recordCount: number
   isLoading?: boolean
@@ -37,12 +37,12 @@ export interface DataGridProps<TData extends object> {
   loadingMessage?: string
   emptyMessage?: string
   onRowClick?: (row: TData) => void
-  tableLayout?: DataGridTableLayout
-  tableClassNames?: DataGridTableClassNames
+  tableLayout?: DataTableLayout
+  tableClassNames?: DataTableClassNames
 }
 
-export interface DataGridContext<TData extends object> {
-  props: DataGridProps<TData>
+export interface DataTableContext<TData extends object> {
+  props: DataTableProps<TData>
   table: Table<TData>
   recordCount: number
   isLoading: boolean
