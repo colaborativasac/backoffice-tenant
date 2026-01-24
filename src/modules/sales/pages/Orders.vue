@@ -7,7 +7,6 @@ import {
   ToolbarTitle,
   ToolbarDescription,
 } from '@/shared/components/common/toolbar'
-import { EventsTable } from '@/modules/events/components/tables'
 </script>
 <template>
   <Container variant="fixed">
@@ -22,6 +21,10 @@ import { EventsTable } from '@/modules/events/components/tables'
     </Toolbar>
   </Container>
   <Container variant="fixed" class="mt-6">
-    <EventsTable />
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam eos aliquid minima
+      exercitationem illo ullam delectus cumque, fuga, rerum tenetur dolor magni et natus vel odio
+      magnam nam itaque nobis?
+    </p>
   </Container>
 </template>

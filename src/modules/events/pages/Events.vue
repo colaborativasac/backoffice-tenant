@@ -27,7 +27,7 @@ import { Plus } from 'lucide-vue-next'
       </ToolbarActions>
     </Toolbar>
   </Container>
-  <Container>
+  <Container variant="fixed">
     <Card>
       <CardHeader>
         <CardHeading>

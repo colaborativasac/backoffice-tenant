@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (isInitialized.value) return
     isLoading.value = true
     try {
-      // const currentUser = await authApi.getCurrentUser()
+      // user.value = await authApi.getCurrentUser()
       user.value = {
         id: 1,
         name: 'John Doe',
@@ -31,6 +31,10 @@ export const useAuthStore = defineStore('auth', () => {
         email_verified_at: '2023-01-01T00:00:00Z',
         created_at: '2023-01-01T00:00:00Z',
         updated_at: '2023-01-01T00:00:00Z',
+        is_seller: true,
+        is_validator: false,
+        photo_url: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
+        product_id: 0,
       }
     } catch {
       user.value = null
