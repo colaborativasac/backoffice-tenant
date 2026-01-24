@@ -21,3 +21,17 @@ export const AG_GRID_THEME = themeQuartz.withParams({
 
   spacing: 6,
 })
+
+export const DEFAULT_COL_DEF = {
+  sortable: false,
+  filter: false,
+  resizable: true,
+  flex: 1,
+  minWidth: 100,
+} as const
+
+export const DEFAULT_GRID_OPTIONS = {
+  animateRows: true,
+  suppressCellFocus: true,
+  suppressRowClickSelection: true,
+} as const

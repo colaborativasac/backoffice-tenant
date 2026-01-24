@@ -1,36 +1,26 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
 <script setup lang="ts">
 import { ref, computed, useAttrs } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3'
 import { AG_GRID_LOCALE_ES } from '@ag-grid-community/locale'
 
-import type {
-  ColDef,
-  GridOptions,
-  GridApi,
-  GridReadyEvent,
-  CellChangedEvent,
-  SortChangedEvent,
-  PaginationChangedEvent,
-} from 'ag-grid-community'
-import { AG_GRID_THEME } from './data-grid.config'
-
-interface DataGridProps extends GridOptions {
-  defaultColDef?: ColDef
-}
+import type { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community'
+import { AG_GRID_THEME, DEFAULT_COL_DEF, DEFAULT_GRID_OPTIONS } from './data-grid.config'
+import type { DataGridProps, DataGridEmits, DataGridExpose } from './ag-grid.types'
 
 const props = withDefaults(defineProps<DataGridProps>(), {
   rowData: () => [],
+  columnDefs: () => [],
   defaultColDef: () => ({}),
   loading: false,
-  loadingMessage: 'Cargando...',
+  height: '500px',
 })
 
-const emit = defineEmits<{
-  'grid-ready': [params: GridReadyEvent]
-  'cell-value-changed': [params: CellChangedEvent]
-  'sort-changed': [params: SortChangedEvent]
-  'pagination-changed': [params: PaginationChangedEvent]
-}>()
+const emit = defineEmits<DataGridEmits>()
 
 const attrs = useAttrs()
 // const slots = useSlots()
@@ -40,41 +30,74 @@ const gridApi = ref<GridApi | null>(null)
 const theme = computed(() => AG_GRID_THEME)
 const localeText = computed(() => AG_GRID_LOCALE_ES)
 
-const mergedDefaultColDef = computed<ColDef>(() => {
-  return {
-    sortable: false,
-    filter: false,
-    resizable: false,
-    flex: 1,
-    minWidth: 100,
-    ...props.defaultColDef,
-  }
-})
+const mergedDefaultColDef = computed<ColDef>(() => ({ ...DEFAULT_COL_DEF, ...props.defaultColDef }))
 
-const onGridReady = (params: GridReadyEvent) => {
+const gridOptions = computed(() => ({
+  ...DEFAULT_GRID_OPTIONS,
+  pagination: false,
+}))
+
+function onGridReady(params: GridReadyEvent) {
   gridApi.value = params.api
-  emit('grid-ready', params)
+  emit('ready', params.api)
+  emit('gridReady', params)
 }
 
-defineExpose({
-  gridApi,
-  getApi: () => gridApi.value,
+function exportCsv(fileName = 'export.csv') {
+  gridApi.value?.exportDataAsCsv({ fileName })
+}
+
+function autoSizeColumns() {
+  gridApi.value?.autoSizeAllColumns()
+}
+
+function sizeColumnsToFit() {
+  gridApi.value?.sizeColumnsToFit()
+}
+
+function deselectAll() {
+  gridApi.value?.deselectAll()
+}
+
+function getSelectedRows<T = unknown>(): T[] {
+  return gridApi.value?.getSelectedRows() ?? []
+}
+
+function refreshCells() {
+  gridApi.value?.refreshCells()
+}
+
+defineExpose<DataGridExpose>({
+  api: gridApi.value,
+  exportCsv,
+  autoSizeColumns,
+  sizeColumnsToFit,
+  deselectAll,
+  getSelectedRows,
+  refreshCells,
 })
 </script>
 <template>
-  <div class="h-[60vh] w-full">
+  <div class="w-full" :style="{ height }">
     <AgGridVue
       :theme="theme"
-      :localeText="localeText"
-      :columnDefs="columnDefs"
-      :rowData="rowData"
-      :defaultColDef="mergedDefaultColDef"
-      v-bind="attrs"
+      :locale-text="localeText"
+      :row-data="rowData"
+      :column-defs="columnDefs"
+      :default-col-def="mergedDefaultColDef"
+      :loading="loading"
       :style="{ height: '100%' }"
+      v-bind="{ ...gridOptions, ...attrs }"
       @grid-ready="onGridReady"
-      @cell-value-changed="emit('cell-value-changed', $event)"
-      @sort-changed="emit('sort-changed', $event)"
-      @pagination-changed="emit('pagination-changed', $event)"
+      @cell-value-changed="emit('cellValueChanged', $event)"
+      @sort-changed="emit('sortChanged', $event)"
+      @pagination-changed="emit('paginationChanged', $event)"
+      @row-clicked="emit('rowClicked', $event)"
+      @row-double-clicked="emit('rowDoubleClicked', $event)"
+      @selection-changed="emit('selectionChanged', $event)"
+      @filter-changed="emit('filterChanged', $event)"
+      @row-data-updated="emit('rowDataUpdated', $event)"
+      @first-data-rendered="emit('firstDataRendered', $event)"
     />
   </div>
 </template>

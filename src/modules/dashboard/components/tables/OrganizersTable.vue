@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { getCoreRowModel, getPaginationRowModel, useVueTable } from '@tanstack/vue-table'
 import { DataTable, DataTableTable } from '@/shared/components/common/data-table'
 import { columns } from './columns/organizers.columns'
-import type { Organizers } from '../../models/dashboard.models'
+import type { Organizers } from '../../types/dashboard.types'
 
 const data = ref<Organizers[]>([
   {

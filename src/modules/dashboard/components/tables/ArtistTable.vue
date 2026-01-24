@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 import { DataTable, DataTableTable } from '@/shared/components/common/data-table'
 import { columns } from './columns/artist.columns'
-import type { Artist } from '@/modules/dashboard/models/dashboard.models'
+import type { Artist } from '@/modules/dashboard/types/dashboard.types'
 
 const data = ref<Artist[]>([
   {
