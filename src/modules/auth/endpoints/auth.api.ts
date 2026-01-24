@@ -5,8 +5,8 @@ import type {
   LoginCredentials,
   LogoutResponse,
   ResetPasswordData,
-} from '../models/auth.models'
-import type { User } from '@/core/models/user.models'
+} from '../types/auth.types'
+import type { User } from '@/core/types/user.types'
 
 export const authApi = {
   async login(credencials: LoginCredentials): Promise<AuthResponse> {

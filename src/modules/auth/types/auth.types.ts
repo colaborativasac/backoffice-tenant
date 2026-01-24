@@ -1,4 +1,4 @@
-import type { User } from '@/core/models/user.models'
+import type { User } from '@/core/types/user.types'
 
 export interface LoginCredentials {
   email: string

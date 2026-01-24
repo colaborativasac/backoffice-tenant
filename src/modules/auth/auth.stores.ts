@@ -1,4 +1,4 @@
-import type { User } from '@/core/models/user.models'
+import type { User } from '@/core/types/user.types'
 import { queryClient } from '@/plugins'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'

@@ -1,4 +1,4 @@
-import type { Event } from '../models/events.models'
+import type { Event } from '../types/events.types'
 
 export const data: Event[] = [
   {

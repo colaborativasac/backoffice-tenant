@@ -1,4 +1,4 @@
-import type { Organizers } from '@/modules/dashboard/models/dashboard.models'
+import type { Organizers } from '@/modules/dashboard/types/dashboard.types'
 import type { ColumnDef } from '@tanstack/vue-table'
 
 export const columns: ColumnDef<Organizers>[] = [

@@ -1,4 +1,4 @@
-import type { Artist } from '@/modules/dashboard/models/dashboard.models'
+import type { Artist } from '@/modules/dashboard/types/dashboard.types'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { h } from 'vue'

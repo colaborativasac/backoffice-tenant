@@ -1,6 +1,6 @@
-import type { EventQueryParams } from '../models/events.models'
-import type { LaravelPaginatedResponse } from '@/core/models/api.models'
-import type { Event } from '@/modules/events/models/events.models'
+import type { EventQueryParams } from '../types/events.types'
+import type { LaravelPaginatedResponse } from '@/core/types/api.types'
+import type { Event } from '@/modules/events/types/events.types'
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }

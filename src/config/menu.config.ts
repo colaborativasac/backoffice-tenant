@@ -1,4 +1,4 @@
-import type { MenuConfig } from '@/core/models/menu.models'
+import type { MenuConfig } from '@/core/types/menu.types'
 import { Calendars, ChartNoAxesCombined, Gauge, Users2 } from 'lucide-vue-next'
 
 export const MENU_SIDEBAR: MenuConfig = [

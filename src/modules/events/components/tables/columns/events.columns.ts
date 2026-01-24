@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { ColDef } from 'ag-grid-community'
-import type { Event } from '@/modules/events/models/events.models'
+import type { Event } from '@/modules/events/types/events.types'
 export const columns = ref<ColDef<Event>[]>([
   {
     field: 'sale_amount',

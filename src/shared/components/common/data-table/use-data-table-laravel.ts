@@ -1,6 +1,6 @@
 import { ref, computed, watch, type Ref } from 'vue'
 import type { ColumnFiltersState, SortingState, PaginationState } from '@tanstack/vue-table'
-import type { LaravelPaginatedResponse, LaravelRequestParams } from '@/core/models/api.models'
+import type { LaravelPaginatedResponse, LaravelRequestParams } from '@/core/types/api.types'
 
 export interface UseDataTableLaravelOptions<T> {
   /** Function to fetch data from API */
