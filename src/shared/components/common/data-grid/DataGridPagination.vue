@@ -10,6 +10,7 @@ import {
   PaginationItem,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Select,
   SelectContent,
@@ -63,6 +64,47 @@ const infoText = computed(() => {
   return `Mostrando ${from}-${to} de ${total} resultados`
 })
 
+// calculamos la cantidad de páginas que se ocultan en el ellipsis
+
+function getHiddenPagesCount(
+  items: Array<{ type: string; value?: number }> = [],
+  ellipsisIndex: number,
+): number {
+  let prevPage: number | undefined = undefined
+  for (let i = ellipsisIndex - 1; i >= 0; i--) {
+    const item = items[i]
+    if (item && item.type === 'page' && item.value !== undefined) {
+      prevPage = item.value
+      break
+    }
+  }
+
+  let nextPage: number | undefined = undefined
+  for (let i = ellipsisIndex + 1; i < items.length; i++) {
+    const item = items[i]
+    if (item && item.type === 'page' && item.value !== undefined) {
+      nextPage = item.value
+      break
+    }
+  }
+
+  if (prevPage !== undefined && nextPage !== undefined) {
+    return nextPage - prevPage - 1
+  }
+
+  return 0
+}
+// generamos el texto del tooltip con el resultado de páginas ocultas
+function getEllipsisTooltip(
+  items: Array<{ type: string; value?: number }>,
+  ellipsisIndex: number,
+): string {
+  const hiddenCount = getHiddenPagesCount(items, ellipsisIndex)
+  if (hiddenCount === 0) return ''
+  if (hiddenCount === 1) return '1 página'
+  return `${hiddenCount} páginas`
+}
+
 // handlers
 function handlePageChange(page: number) {
   if (page !== props.meta.currentPage && !props.disabled) {
@@ -91,14 +133,18 @@ function handlePerPageChange(value: AcceptableValue) {
         defaultValue="10"
       >
         <SelectTrigger id="{id}" class="w-fit whitespace-nowrap">
-          <SelectValue placeholder="Selecciona el número de resultados" />
+          <SelectValue class="tabular-nums" placeholder="Selecciona el número de resultados" />
         </SelectTrigger>
         <SelectContent
           class="[&_*[role=option]]:pr-8 [&_*[role=option]]:pl-2 [&_*[role=option]>span]:right-2 [&_*[role=option]>span]:left-auto"
         >
-          <SelectItem v-for="option in perPageOptions" :key="option" :value="String(option)">{{
-            option
-          }}</SelectItem>
+          <SelectItem
+            v-for="option in perPageOptions"
+            :key="option"
+            :value="String(option)"
+            class="tabular-nums"
+            >{{ option }}</SelectItem
+          >
         </SelectContent>
       </Select>
     </div>
@@ -134,8 +180,16 @@ function handlePerPageChange(value: AcceptableValue) {
             :is-active="item.value === page"
             :disabled="disabled"
             :aria-current="item.value === page ? 'page' : undefined"
+            class="tabular-nums"
           />
-          <PaginationEllipsis v-else :index="index" />
+          <Tooltip v-else :index="index">
+            <TooltipTrigger as-child>
+              <PaginationEllipsis />
+            </TooltipTrigger>
+            <TooltipContent>
+              {{ getEllipsisTooltip(items, index) }}
+            </TooltipContent>
+          </Tooltip>
         </template>
         <PaginationNext>
           <ChevronRightIcon class="size-4" />

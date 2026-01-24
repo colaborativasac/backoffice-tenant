@@ -14,7 +14,7 @@ import { data } from '@/modules/events/config/data.config'
     />
     <DataGridPagination
       :meta="{
-        currentPage: 9,
+        currentPage: 4,
         perPage: 10,
         total: 120,
         from: 1,
