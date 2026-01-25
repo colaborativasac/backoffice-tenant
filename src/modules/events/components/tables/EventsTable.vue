@@ -2,6 +2,12 @@
 import { DataGrid, DataGridPagination } from '@/shared/components/common/data-grid'
 import { columns } from './columns/events.columns'
 import { data } from '@/modules/events/config/data.config'
+import type { RowSelectionOptions } from 'ag-grid-community'
+import { ref } from 'vue'
+
+const rowSelection = ref<RowSelectionOptions | 'single' | 'multiple'>({
+  mode: 'multiRow',
+})
 </script>
 <template>
   <div>
@@ -9,8 +15,11 @@ import { data } from '@/modules/events/config/data.config'
       :row-data="data"
       :column-defs="columns"
       :tooltip-show-delay="0"
+      :tooltip-hide-delay="55000"
+      :tooltip-interaction="true"
       tooltip-show-mode="whenTruncated"
       :height="'60vh'"
+      :row-selection="rowSelection"
     />
     <DataGridPagination
       :meta="{

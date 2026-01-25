@@ -6,20 +6,32 @@ export const AG_GRID_THEME = themeQuartz.withParams({
     width: '1px',
     color: 'var(--border)',
   },
-  headerHeight: '2.5rem',
+  headerHeight: 40,
+  accentColor: 'var(--primary)',
 
   selectedRowBackgroundColor: 'var(--color-green-50)',
 
-  checkboxUncheckedBackgroundColor: 'var(--background)',
-  checkboxUncheckedBorderColor: 'var(--color-border)',
-  checkboxBorderRadius: '.375rem',
-  checkboxCheckedBackgroundColor: 'var(--color-primary)',
-  checkboxCheckedBorderColor: 'var(--color-border)',
-  checkboxIndeterminateBackgroundColor: 'var(--color-muted-foreground)',
+  checkboxUncheckedBackgroundColor: 'var(--transparent)',
+  checkboxUncheckedBorderColor: 'var(--input)',
+  checkboxBorderRadius: '0.25rem',
+  checkboxCheckedBackgroundColor: 'var(--primary)',
+  checkboxCheckedBorderColor: 'var(--primary)',
+  checkboxIndeterminateBackgroundColor: 'var(--border)',
 
-  // focusShadow: '0 0 0 1px var(--color-border)',
+  focusShadow: '0 0 0 3px oklch(from var(--ring) l c h / 0.5)',
 
-  spacing: 6,
+  spacing: 8,
+
+  // cell
+  columnBorder: {
+    style: 'solid',
+    color: 'var(--color-border)',
+  },
+
+  // input
+  inputInvalidBackgroundColor: 'oklch(from var(--color-input) l c h / 0.3)',
+  inputInvalidBorder: 'var(--color-destructive)',
+  inputInvalidTextColor: 'var(--color-destructive)',
 })
 
 export const DEFAULT_COL_DEF = {

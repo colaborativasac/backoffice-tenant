@@ -11,57 +11,104 @@
 
   /* header */
   --ag-border-color: var(--color-border);
-  --ag-header-text-color: var(--color-accent-foreground);
+  /* --ag-header-row-border */
+  --ag-header-column-resize-handle-color: var(--color-border);
+  --ag-header-text-color: oklch(from var(--color-foreground) l c h / 0.7);
   --ag-header-background-color: var(--color-sidebar);
   /* cell */
-  --ag-cell-text-color: var(--color-foreground);
+  --ag-cell-text-color: oklch(from var(--color-foreground) l c h / 0.8);
   --ag-range-selection-border-color: transparent;
   /* row */
-  --ag-row-hover-color: var(--color-accent);
-  border-bottom-left-radius: var(--radius-xl);
-  border-bottom-right-radius: var(--radius-xl);
+  --ag-row-hover-color: oklch(from var(--color-accent) l c h / 0.4);
+  /* --ag-selected-row-background-color: var(--color-green-50); */
+  --ag-selected-row-background-color: oklch(from var(--color-primary) l c h / 0.025);
+  /* rows background */
+  --ag-odd-row-background-color: oklch(from var(--color-muted) l c h / 0.2);
+  --ag-data-background-color: var(--color-background);
 
   /* input */
   /* --ag-input-focus-border: var(--color-primary); */
   --ag-input-focus-text-color: var(--color-foreground);
   --ag-input-focus-background-color: transparent;
+
+  /* tooltip */
+  --ag-tooltip-background-color: var(--foreground);
+  --ag-tooltip-text-color: var(--background);
+  --ag-widget-container-vertical-padding: calc(var(--spacing) * 1.5);
+  --ag-widget-container-horizontal-padding: calc(var(--spacing) * 3);
+
+  border-bottom-left-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+
   .ag-header {
     @apply bg-muted/40;
+  }
+  .ag-row {
+    @apply border-border!;
   }
 
   .ag-cell {
     @apply tabular-nums;
   }
+  .ag-cell-edit-wrapper {
+    @apply p-1!;
+  }
   .ag-cell-inline-editing {
     @apply border-input! shadow-none!;
   }
   .ag-cell-inline-editing {
-    @apply border-none! p-px;
+    @apply border-none!;
   }
   .ag-input-field-input {
-    @apply bg-input/30! border-input! tabular-nums focus:shadow-none!;
+    @apply bg-transparent! border-input! tabular-nums focus:shadow-none!;
+  }
+  /* popup editor */
+  .ag-popup-editor {
+    @apply ring-ring/50! rounded-md!;
+  }
+  /* editor cell */
+  .ag-large-text {
+    @apply shadow-none!;
+  }
+  .ag-large-text-input {
+    @apply border-input! bg-transparent! p-1! tabular-nums focus:shadow-none! h-max! rounded-md!;
+    .ag-text-area-input {
+      @apply border-input! focus-visible:border-ring focus-visible:ring-ring/50! dark:bg-input/30! field-sizing-content rounded-sm! px-3! py-2! min-h-16! max-h-24! resize-none!;
+    }
+  }
+  /* tooltip class */
+  .ag-tooltip {
+    @apply rounded-md! shadow-lg!;
+    &.ag-cell-tooltip {
+      @apply text-xs! text-balance!;
+    }
   }
 }
 
 .dark .ag-root-wrapper {
-  --ag-border-color: var(--color-border);
-  /* --ag-inherited-accent-color: var(--color-border); */
   /* background */
-  --ag-data-background-color: transparent;
-  --ag-background-color: transparent;
+  --ag-data-background-color: var(--color-background);
+  --ag-background-color: var(--color-background);
   /* header */
   --ag-border-color: var(--color-border);
-  --ag-header-text-color: var(--color-accent-foreground);
+  --ag-header-text-color: oklch(from var(--color-foreground) l c h / 0.7);
   --ag-header-background-color: var(--color-sidebar);
 
   /* cell */
-  --ag-cell-text-color: var(--color-foreground);
+  --ag-cell-text-color: oklch(from var(--color-foreground) l c h / 0.8);
   --ag-range-selection-border-color: transparent;
   /* row */
-  --ag-row-hover-color: var(--color-accent);
+  --ag-selected-row-background-color: oklch(from var(--color-primary) l c h / 0.2);
+  --ag-row-hover-color: oklch(from var(--color-accent) l c h / 0.4);
   /* columns */
   --ag-column-border-color: var(--color-border);
 
   /* inputs */
   --ag-input-text-color: var(--color-foreground);
+
+  /* tooltip */
+  --ag-tooltip-background-color: var(--foreground);
+  --ag-tooltip-text-color: var(--background);
+  --ag-widget-container-vertical-padding: calc(var(--spacing) * 1.5);
+  --ag-widget-container-horizontal-padding: calc(var(--spacing) * 3);
 }

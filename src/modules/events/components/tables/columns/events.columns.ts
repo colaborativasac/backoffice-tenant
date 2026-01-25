@@ -5,10 +5,12 @@ export const columns = ref<ColDef<Event>[]>([
   {
     field: 'sale_amount',
     headerName: 'Venta',
+    sortable: true,
   },
   {
     field: 'poster',
     headerName: 'Poster',
+    sortable: true,
   },
   {
     field: 'id',
@@ -18,6 +20,8 @@ export const columns = ref<ColDef<Event>[]>([
   {
     field: 'title_small',
     headerName: 'Título',
+    editable: true,
+    cellEditor: 'agLargeTextCellEditor',
     tooltipValueGetter: (params) => params.value,
     minWidth: 250,
   },
