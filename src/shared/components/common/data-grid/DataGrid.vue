@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<DataGridProps>(), {
 const emit = defineEmits<DataGridEmits>()
 
 const attrs = useAttrs()
-// const slots = useSlots()
 
 const gridApi = ref<GridApi | null>(null)
 
@@ -78,26 +77,25 @@ defineExpose<DataGridExpose>({
 })
 </script>
 <template>
-  <div class="w-full" :style="{ height }">
-    <AgGridVue
-      :theme="theme"
-      :locale-text="localeText"
-      :row-data="rowData"
-      :column-defs="columnDefs"
-      :default-col-def="mergedDefaultColDef"
-      :loading="loading"
-      :style="{ height: '100%' }"
-      v-bind="{ ...gridOptions, ...attrs }"
-      @grid-ready="onGridReady"
-      @cell-value-changed="emit('cellValueChanged', $event)"
-      @sort-changed="emit('sortChanged', $event)"
-      @pagination-changed="emit('paginationChanged', $event)"
-      @row-clicked="emit('rowClicked', $event)"
-      @row-double-clicked="emit('rowDoubleClicked', $event)"
-      @selection-changed="emit('selectionChanged', $event)"
-      @filter-changed="emit('filterChanged', $event)"
-      @row-data-updated="emit('rowDataUpdated', $event)"
-      @first-data-rendered="emit('firstDataRendered', $event)"
-    />
-  </div>
+  <AgGridVue
+    :theme="theme"
+    :locale-text="localeText"
+    :row-data="rowData"
+    :column-defs="columnDefs"
+    :default-col-def="mergedDefaultColDef"
+    :loading="loading"
+    :class="'ag-theme-tailwind'"
+    :style="{ height: height }"
+    v-bind="{ ...gridOptions, ...attrs }"
+    @grid-ready="onGridReady"
+    @cell-value-changed="emit('cellValueChanged', $event)"
+    @sort-changed="emit('sortChanged', $event)"
+    @pagination-changed="emit('paginationChanged', $event)"
+    @row-clicked="emit('rowClicked', $event)"
+    @row-double-clicked="emit('rowDoubleClicked', $event)"
+    @selection-changed="emit('selectionChanged', $event)"
+    @filter-changed="emit('filterChanged', $event)"
+    @row-data-updated="emit('rowDataUpdated', $event)"
+    @first-data-rendered="emit('firstDataRendered', $event)"
+  />
 </template>

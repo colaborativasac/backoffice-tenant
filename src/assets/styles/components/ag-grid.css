@@ -1,20 +1,17 @@
-.ag-root-wrapper {
-  --ag-wrapper-border: 0;
-  --ag-wrapper-border-radius: 0;
-
-  --ag-font-family: var(--font-sans);
-
-  --ag-border-color: var(--color-border);
-
+:root {
   /* global */
+  --ag-font-family: var(--font-sans);
   --ag-inherited-accent-color: var(--color-primary);
-
+  --ag-foreground-color: var(--foreground);
+  --ag-background-color: var(--background);
+  --ag-border-color: var(--border);
+  /* end global */
   /* header */
-  --ag-border-color: var(--color-border);
-  /* --ag-header-row-border */
+  --ag-header-background-color: var(--muted);
+  --ag-header-foreground-color: var(--muted-foreground);
   --ag-header-column-resize-handle-color: var(--color-border);
   --ag-header-text-color: oklch(from var(--color-foreground) l c h / 0.7);
-  --ag-header-background-color: var(--color-sidebar);
+
   /* cell */
   --ag-cell-text-color: oklch(from var(--color-foreground) l c h / 0.8);
   --ag-range-selection-border-color: transparent;
@@ -34,12 +31,23 @@
   /* tooltip */
   --ag-tooltip-background-color: var(--foreground);
   --ag-tooltip-text-color: var(--background);
+  --ag-tooltip-border: solid 1px var(--transparent);
   --ag-widget-container-vertical-padding: calc(var(--spacing) * 1.5);
   --ag-widget-container-horizontal-padding: calc(var(--spacing) * 3);
 
-  border-bottom-left-radius: var(--radius-xl);
-  border-bottom-right-radius: var(--radius-xl);
+  /* overlay */
+  --ag-modal-overlay-background-color: oklch(from var(--color-background) l c h / 0.8);
 
+  /* icons */
+  --ag-icon-color: var(--color-muted-foreground);
+  --ag-icon-size: 1rem;
+  /* end icons */
+}
+
+.ag-theme-tailwind {
+  .ag-root-wrapper {
+    @apply border-0! rounded-none!;
+  }
   .ag-header {
     @apply bg-muted/40;
   }
@@ -83,32 +91,17 @@
       @apply text-xs! text-balance!;
     }
   }
-}
 
-.dark .ag-root-wrapper {
-  /* background */
-  --ag-data-background-color: var(--color-background);
-  --ag-background-color: var(--color-background);
-  /* header */
-  --ag-border-color: var(--color-border);
-  --ag-header-text-color: oklch(from var(--color-foreground) l c h / 0.7);
-  --ag-header-background-color: var(--color-sidebar);
-
-  /* cell */
-  --ag-cell-text-color: oklch(from var(--color-foreground) l c h / 0.8);
-  --ag-range-selection-border-color: transparent;
-  /* row */
-  --ag-selected-row-background-color: oklch(from var(--color-primary) l c h / 0.2);
-  --ag-row-hover-color: oklch(from var(--color-accent) l c h / 0.4);
-  /* columns */
-  --ag-column-border-color: var(--color-border);
-
-  /* inputs */
-  --ag-input-text-color: var(--color-foreground);
-
-  /* tooltip */
-  --ag-tooltip-background-color: var(--foreground);
-  --ag-tooltip-text-color: var(--background);
-  --ag-widget-container-vertical-padding: calc(var(--spacing) * 1.5);
-  --ag-widget-container-horizontal-padding: calc(var(--spacing) * 3);
+  /* loading */
+  .ag-overlay {
+    .ag-overlay-wrapper {
+      @apply isolate;
+      .ag-overlay-loading-center {
+        @apply bg-background! rounded-md! shadow-none! border-border! flex items-center;
+        .ag-loading-text {
+          @apply text-foreground! text-sm!;
+        }
+      }
+    }
+  }
 }

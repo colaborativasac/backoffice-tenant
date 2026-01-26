@@ -32,6 +32,9 @@ export const AG_GRID_THEME = themeQuartz.withParams({
   inputInvalidBackgroundColor: 'oklch(from var(--color-input) l c h / 0.3)',
   inputInvalidBorder: 'var(--color-destructive)',
   inputInvalidTextColor: 'var(--color-destructive)',
+
+  // drag and drop
+  dragAndDropImageBackgroundColor: 'var(--background)',
 })
 
 export const DEFAULT_COL_DEF = {

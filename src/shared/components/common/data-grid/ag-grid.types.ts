@@ -12,13 +12,12 @@ import type {
   FilterChangedEvent,
   RowDataUpdatedEvent,
   FirstDataRenderedEvent,
+  GridOptions,
 } from 'ag-grid-community'
+import type { Ref } from 'vue'
 
-export interface DataGridProps {
-  rowData?: unknown[]
-  columnDefs?: ColDef[]
+export interface DataGridProps extends Partial<GridOptions> {
   defaultColDef?: ColDef
-  loading?: boolean
   height?: string
 }
 

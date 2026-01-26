@@ -121,7 +121,7 @@ function handlePerPageChange(value: AcceptableValue) {
 </script>
 <template>
   <div
-    class="flex w-full flex-wrap items-center justify-between gap-6 max-sm:justify-center px-4 py-3"
+    class="flex max-sm:flex-col w-full flex-wrap items-center justify-between gap-6 max-sm:justify-center md:px-4 py-3"
   >
     <div class="flex shrink-0 items-center gap-3">
       <Label v-if="showInfo" htmlFor="{id}">Filas por página</Label>
@@ -151,7 +151,7 @@ function handlePerPageChange(value: AcceptableValue) {
     <div
       class="text-muted-foreground flex grow items-center justify-end whitespace-nowrap max-sm:justify-center"
     >
-      <p class="text-muted-foreground text-sm whitespace-nowrap" aria-live="polite">
+      <p class="text-muted-foreground text-xs sm:text-sm whitespace-nowrap" aria-live="polite">
         {{ infoText }}
       </p>
     </div>
@@ -167,10 +167,10 @@ function handlePerPageChange(value: AcceptableValue) {
       @update:page="handlePageChange"
     >
       <PaginationContent v-slot="{ items }">
-        <PaginationFirst>
+        <PaginationFirst class="max-md:hidden">
           <ChevronFirstIcon class="size-4" />
         </PaginationFirst>
-        <PaginationPrevious>
+        <PaginationPrevious class="max-md:size-7">
           <ChevronLeftIcon class="size-4" />
         </PaginationPrevious>
         <template v-for="(item, index) in items" :key="index">
@@ -180,21 +180,21 @@ function handlePerPageChange(value: AcceptableValue) {
             :is-active="item.value === page"
             :disabled="disabled"
             :aria-current="item.value === page ? 'page' : undefined"
-            class="tabular-nums"
+            class="tabular-nums max-md:size-7"
           />
           <Tooltip v-else :index="index">
             <TooltipTrigger as-child>
-              <PaginationEllipsis />
+              <PaginationEllipsis class="max-md:size-7" />
             </TooltipTrigger>
             <TooltipContent>
               {{ getEllipsisTooltip(items, index) }}
             </TooltipContent>
           </Tooltip>
         </template>
-        <PaginationNext>
+        <PaginationNext class="max-md:size-7">
           <ChevronRightIcon class="size-4" />
         </PaginationNext>
-        <PaginationLast>
+        <PaginationLast class="max-md:hidden">
           <ChevronLastIcon class="size-4" />
         </PaginationLast>
       </PaginationContent>
