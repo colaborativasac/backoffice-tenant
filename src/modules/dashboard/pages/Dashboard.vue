@@ -88,7 +88,7 @@ const cards = [
     </Toolbar>
   </Container>
   <Container variant="fixed">
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
       <Item v-for="card in cards" :key="card.id" variant="outline">
         <ItemMedia>
           <component :is="card.icon" class="size-5" />
@@ -102,7 +102,7 @@ const cards = [
         </ItemActions>
       </Item>
     </div>
-    <div class="grid grid-cols-2 gap-4 mt-8">
+    <div class="grid sm:grid-cols-2 gap-4 mt-8">
       <Card>
         <CardHeader>
           <CardHeading>
