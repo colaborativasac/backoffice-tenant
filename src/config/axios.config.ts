@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios'
-import type { ApiError } from '@/core/types/api.types'
+import type { ApiErrorResponse } from '@/core/types/api.types'
 import { env } from '@/lib/env'
 
 const api: AxiosInstance = axios.create({
@@ -24,7 +24,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
+  (error: AxiosError<ApiErrorResponse>) => {
     const status = error.response?.status
 
     if (status === 401) {
@@ -43,11 +43,19 @@ api.interceptors.response.use(
   },
 )
 
-export async function getCsrfCookie(): Promise<void> {
-  await axios.get('/sanctum/csrf-cookie', {
-    baseURL: env.VITE_API_URL,
-    withCredentials: true,
-  })
+// export async function getCsrfCookie(): Promise<void> {
+//   await axios.get('/sanctum/csrf-cookie', {
+//     baseURL: env.VITE_API_URL,
+//     withCredentials: true,
+//   })
+// }
+
+export const refreshCsrfToken = async (): Promise<void> => {
+  await api.get('/sanctum/csrf-cookie')
+}
+
+export const initCsrf = async (): Promise<void> => {
+  await refreshCsrfToken()
 }
 
 export default api

@@ -1,9 +1,10 @@
 export interface ApiResponse<T = unknown> {
   data: T
   message?: string
+  errors?: Record<string, string[]>
 }
 
-export interface ApiError {
+export interface ApiErrorResponse {
   message: string
   errors?: Record<string, string[]>
   status?: number
