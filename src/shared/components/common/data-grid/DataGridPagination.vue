@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {
-  Pagination,
-  PaginationFirst,
-  PaginationNext,
-  PaginationLast,
-  PaginationEllipsis,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useDataGrid } from '.'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -18,186 +9,194 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { PaginationMeta, PerPageOption } from './ag-grid.types'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { cn } from '@/lib/utils'
 import type { AcceptableValue } from 'reka-ui'
-import { Label } from '@/components/ui/label'
-import {
-  ChevronFirstIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronLastIcon,
-} from 'lucide-vue-next'
 
-interface Props {
-  /** Meta de paginación (de Laravel) */
-  meta: PaginationMeta
-  /** Opciones de items por página */
-  perPageOptions?: PerPageOption[]
-  /** Mostrar selector de items por página */
-  showPerPageSelector?: boolean
-  /** Mostrar información de registros */
-  showInfo?: boolean
-  /** Número de páginas visibles a cada lado */
-  siblingCount?: number
-  /** Deshabilitado (durante carga) */
-  disabled?: boolean
+interface DataGridPaginationProps {
+  sizes?: number[]
+  sizesLabel?: string
+  sizesDescription?: string
+  moreLimit?: number
+  more?: boolean
+  info?: string
+  class?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  perPageOptions: () => [10, 15, 20, 25, 50],
-  showPerPageSelector: true,
-  showInfo: true,
-  siblingCount: 1,
-  disabled: false,
+const props = withDefaults(defineProps<DataGridPaginationProps>(), {
+  sizes: () => [5, 10, 25, 50, 100],
+  sizesLabel: 'Show',
+  sizesDescription: 'per page',
+  moreLimit: 5,
+  more: false,
+  info: '{from} - {to} of {count}',
 })
 
-const emit = defineEmits<{
-  pageChange: [page: number]
-  perPageChange: [perPage: PerPageOption]
-}>()
+const { table, recordCount, isLoading } = useDataGrid()
 
-const infoText = computed(() => {
-  const { from, to, total } = props.meta
-  if (from === null || to === null) {
-    return `Mostrando 0 de ${total} resultados`
+const btnBaseClasses = 'size-7 p-0 text-sm'
+const btnArrowClasses = `${btnBaseClasses} rtl:transform rtl:rotate-180`
+
+const pageIndex = computed(() => table.getState().pagination.pageIndex)
+const pageSize = computed(() => table.getState().pagination.pageSize)
+const pageCount = computed(() => table.getPageCount())
+
+const from = computed(() => pageIndex.value * pageSize.value + 1)
+const to = computed(() => Math.min((pageIndex.value + 1) * pageSize.value, recordCount))
+
+const paginationInfo = computed(() =>
+  props.info
+    .replace('{from}', from.value.toString())
+    .replace('{to}', to.value.toString())
+    .replace('{count}', recordCount.toString()),
+)
+
+// Pagination group logic
+const currentGroupStart = computed(
+  () => Math.floor(pageIndex.value / props.moreLimit) * props.moreLimit,
+)
+const currentGroupEnd = computed(() =>
+  Math.min(currentGroupStart.value + props.moreLimit, pageCount.value),
+)
+
+const pageButtons = computed(() => {
+  const buttons: number[] = []
+  for (let i = currentGroupStart.value; i < currentGroupEnd.value; i++) {
+    buttons.push(i)
   }
-  return `Mostrando ${from}-${to} de ${total} resultados`
+  return buttons
 })
 
-// calculamos la cantidad de páginas que se ocultan en el ellipsis
+const showEllipsisPrev = computed(() => currentGroupStart.value > 0)
+const showEllipsisNext = computed(() => currentGroupEnd.value < pageCount.value)
 
-function getHiddenPagesCount(
-  items: Array<{ type: string; value?: number }> = [],
-  ellipsisIndex: number,
-): number {
-  let prevPage: number | undefined = undefined
-  for (let i = ellipsisIndex - 1; i >= 0; i--) {
-    const item = items[i]
-    if (item && item.type === 'page' && item.value !== undefined) {
-      prevPage = item.value
-      break
-    }
-  }
-
-  let nextPage: number | undefined = undefined
-  for (let i = ellipsisIndex + 1; i < items.length; i++) {
-    const item = items[i]
-    if (item && item.type === 'page' && item.value !== undefined) {
-      nextPage = item.value
-      break
-    }
-  }
-
-  if (prevPage !== undefined && nextPage !== undefined) {
-    return nextPage - prevPage - 1
-  }
-
-  return 0
-}
-// generamos el texto del tooltip con el resultado de páginas ocultas
-function getEllipsisTooltip(
-  items: Array<{ type: string; value?: number }>,
-  ellipsisIndex: number,
-): string {
-  const hiddenCount = getHiddenPagesCount(items, ellipsisIndex)
-  if (hiddenCount === 0) return ''
-  if (hiddenCount === 1) return '1 página'
-  return `${hiddenCount} páginas`
-}
-
-// handlers
-function handlePageChange(page: number) {
-  if (page !== props.meta.currentPage && !props.disabled) {
-    emit('pageChange', page)
+function goToPage(index: number) {
+  if (pageIndex.value !== index) {
+    table.setPageIndex(index)
   }
 }
 
-function handlePerPageChange(value: AcceptableValue) {
-  const perPage = Number(value) as PerPageOption
-  if (perPage !== props.meta.perPage) {
-    emit('perPageChange', perPage)
-  }
+function goToPrevGroup() {
+  table.setPageIndex(currentGroupStart.value - 1)
+}
+
+function goToNextGroup() {
+  table.setPageIndex(currentGroupEnd.value)
+}
+
+function handlePageSizeChange(value: AcceptableValue) {
+  table.setPageSize(Number(value))
 }
 </script>
+
 <template>
   <div
-    class="flex max-sm:flex-col w-full flex-wrap items-center justify-between gap-6 max-sm:justify-center md:px-4 py-3"
+    data-slot="data-grid-pagination"
+    :class="
+      cn(
+        'flex flex-wrap flex-col sm:flex-row justify-between items-center gap-2.5 py-2.5 sm:py-0 grow',
+        props.class,
+      )
+    "
   >
-    <div class="flex shrink-0 items-center gap-3">
-      <Label v-if="showInfo" htmlFor="{id}">Filas por página</Label>
-      <Select
-        v-if="showPerPageSelector"
-        :model-value="String(meta.perPage)"
-        :disabled="disabled"
-        @update:model-value="handlePerPageChange"
-        defaultValue="10"
-      >
-        <SelectTrigger id="{id}" class="w-fit whitespace-nowrap">
-          <SelectValue class="tabular-nums" placeholder="Selecciona el número de resultados" />
-        </SelectTrigger>
-        <SelectContent
-          class="[&_*[role=option]]:pr-8 [&_*[role=option]]:pl-2 [&_*[role=option]>span]:right-2 [&_*[role=option]>span]:left-auto"
-        >
-          <SelectItem
-            v-for="option in perPageOptions"
-            :key="option"
-            :value="String(option)"
-            class="tabular-nums"
-            >{{ option }}</SelectItem
-          >
-        </SelectContent>
-      </Select>
+    <!-- Rows per page -->
+    <div class="flex flex-wrap items-center space-x-2.5 pb-2.5 sm:pb-0 order-2 sm:order-1">
+      <template v-if="isLoading">
+        <Skeleton class="h-8 w-44" />
+      </template>
+      <template v-else>
+        <div class="text-sm text-muted-foreground">Filas por página</div>
+        <Select :model-value="`${pageSize}`" @update:model-value="handlePageSizeChange">
+          <SelectTrigger class="w-fit h-8">
+            <SelectValue :placeholder="`${pageSize}`" />
+          </SelectTrigger>
+          <SelectContent side="top" class="min-w-[50px]">
+            <SelectItem v-for="size in sizes" :key="size" :value="`${size}`">
+              {{ size }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </template>
     </div>
+
+    <!-- Pagination controls -->
     <div
-      class="text-muted-foreground flex grow items-center justify-end whitespace-nowrap max-sm:justify-center"
+      class="flex flex-col sm:flex-row justify-center sm:justify-end items-center gap-2.5 pt-2.5 sm:pt-0 order-1 sm:order-2"
     >
-      <p class="text-muted-foreground text-xs sm:text-sm whitespace-nowrap" aria-live="polite">
-        {{ infoText }}
-      </p>
+      <template v-if="isLoading">
+        <Skeleton class="h-8 w-60" />
+      </template>
+      <template v-else>
+        <div class="text-sm text-muted-foreground text-nowrap order-2 sm:order-1">
+          {{ paginationInfo }}
+        </div>
+        <div v-if="pageCount > 1" class="flex items-center space-x-1 order-1 sm:order-2">
+          <!-- Previous -->
+          <Button
+            size="sm"
+            variant="ghost"
+            :class="btnArrowClasses"
+            :disabled="!table.getCanPreviousPage()"
+            @click="table.previousPage()"
+          >
+            <span class="sr-only">Ir a la página anterior</span>
+            <ChevronLeft class="size-4" />
+          </Button>
+
+          <!-- Ellipsis Prev -->
+          <Button
+            v-if="showEllipsisPrev"
+            size="sm"
+            variant="ghost"
+            :class="btnBaseClasses"
+            @click="goToPrevGroup"
+          >
+            ...
+          </Button>
+
+          <!-- Page Buttons -->
+          <Button
+            v-for="page in pageButtons"
+            :key="page"
+            size="sm"
+            variant="ghost"
+            :class="
+              cn(
+                btnBaseClasses,
+                'text-muted-foreground',
+                pageIndex === page && 'bg-accent text-accent-foreground',
+              )
+            "
+            @click="goToPage(page)"
+          >
+            {{ page + 1 }}
+          </Button>
+
+          <!-- Ellipsis Next -->
+          <Button
+            v-if="showEllipsisNext"
+            size="sm"
+            variant="ghost"
+            :class="btnBaseClasses"
+            @click="goToNextGroup"
+          >
+            ...
+          </Button>
+
+          <!-- Next -->
+          <Button
+            size="sm"
+            variant="ghost"
+            :class="btnArrowClasses"
+            :disabled="!table.getCanNextPage()"
+            @click="table.nextPage()"
+          >
+            <span class="sr-only">Ir a la página siguiente</span>
+            <ChevronRight class="size-4" />
+          </Button>
+        </div>
+      </template>
     </div>
-    <Pagination
-      v-slot="{ page }"
-      :total="meta.total"
-      :items-per-page="meta.perPage"
-      :sibling-count="siblingCount"
-      :default-page="meta.currentPage"
-      :page="meta.currentPage"
-      class="w-fit max-sm:mx-0"
-      show-edges
-      @update:page="handlePageChange"
-    >
-      <PaginationContent v-slot="{ items }">
-        <PaginationFirst class="max-md:hidden">
-          <ChevronFirstIcon class="size-4" />
-        </PaginationFirst>
-        <PaginationPrevious class="max-md:size-7">
-          <ChevronLeftIcon class="size-4" />
-        </PaginationPrevious>
-        <template v-for="(item, index) in items" :key="index">
-          <PaginationItem
-            v-if="item.type === 'page'"
-            :value="item.value"
-            :is-active="item.value === page"
-            :disabled="disabled"
-            :aria-current="item.value === page ? 'page' : undefined"
-            class="tabular-nums max-md:size-7"
-          />
-          <Tooltip v-else :index="index">
-            <TooltipTrigger as-child>
-              <PaginationEllipsis class="max-md:size-7" />
-            </TooltipTrigger>
-            <TooltipContent>
-              {{ getEllipsisTooltip(items, index) }}
-            </TooltipContent>
-          </Tooltip>
-        </template>
-        <PaginationNext class="max-md:size-7">
-          <ChevronRightIcon class="size-4" />
-        </PaginationNext>
-        <PaginationLast class="max-md:hidden">
-          <ChevronLastIcon class="size-4" />
-        </PaginationLast>
-      </PaginationContent>
-    </Pagination>
   </div>
 </template>

@@ -1,101 +1,82 @@
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-}
-</script>
-<script setup lang="ts">
-import { ref, computed, useAttrs } from 'vue'
-import { AgGridVue } from 'ag-grid-vue3'
-import { AG_GRID_LOCALE_ES } from '@ag-grid-community/locale'
+<script setup lang="ts" generic="TData extends object">
+import { provide, computed, reactive } from 'vue'
+import { DATA_GRID_KEY, type DataGridProps, type DataGridLayout, type DataGridClassNames } from '.'
 
-import type { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community'
-import { AG_GRID_THEME, DEFAULT_COL_DEF, DEFAULT_GRID_OPTIONS } from './data-grid.config'
-import type { DataGridProps, DataGridEmits, DataGridExpose } from './ag-grid.types'
-
-const props = withDefaults(defineProps<DataGridProps>(), {
-  rowData: () => [],
-  columnDefs: () => [],
-  defaultColDef: () => ({}),
-  loading: false,
-  height: '500px',
+// Props
+const props = withDefaults(defineProps<DataGridProps<TData>>(), {
+  isLoading: false,
+  loadingMode: 'skeleton',
+  loadingMessage: 'Cargando...',
+  emptyMessage: 'No hay datos disponibles',
+  tableLayout: () => ({}),
+  tableClassNames: () => ({}),
 })
 
-const emit = defineEmits<DataGridEmits>()
+// Default values
+const defaultTableLayout: DataGridLayout = {
+  dense: false,
+  cellBorder: false,
+  rowBorder: true,
+  rowRounded: false,
+  stripped: false,
+  headerSticky: false,
+  headerBackground: true,
+  headerBorder: true,
+  width: 'fixed',
+  columnsVisibility: false,
+  columnsResizable: false,
+  columnsPinnable: false,
+  columnsMovable: false,
+  columnsDraggable: false,
+  rowsDraggable: false,
+}
 
-const attrs = useAttrs()
+const defaultTableClassNames: DataGridClassNames = {
+  base: '',
+  header: '',
+  headerRow: '',
+  headerSticky: 'sticky top-0 z-10 bg-background/90 backdrop-blur-sm',
+  body: '',
+  bodyRow: '',
+  footer: '',
+  edgeCell: '',
+}
 
-const gridApi = ref<GridApi | null>(null)
-
-const theme = computed(() => AG_GRID_THEME)
-const localeText = computed(() => AG_GRID_LOCALE_ES)
-
-const mergedDefaultColDef = computed<ColDef>(() => ({ ...DEFAULT_COL_DEF, ...props.defaultColDef }))
-
-const gridOptions = computed(() => ({
-  ...DEFAULT_GRID_OPTIONS,
-  pagination: false,
+// Merged props as computed for reactivity
+const mergedTableLayout = computed(() => ({
+  ...defaultTableLayout,
+  ...props.tableLayout,
 }))
 
-function onGridReady(params: GridReadyEvent) {
-  gridApi.value = params.api
-  emit('ready', params.api)
-  emit('gridReady', params)
-}
+const mergedTableClassNames = computed(() => ({
+  ...defaultTableClassNames,
+  ...props.tableClassNames,
+}))
 
-function exportCsv(fileName = 'export.csv') {
-  gridApi.value?.exportDataAsCsv({ fileName })
-}
-
-function autoSizeColumns() {
-  gridApi.value?.autoSizeAllColumns()
-}
-
-function sizeColumnsToFit() {
-  gridApi.value?.sizeColumnsToFit()
-}
-
-function deselectAll() {
-  gridApi.value?.deselectAll()
-}
-
-function getSelectedRows<T = unknown>(): T[] {
-  return gridApi.value?.getSelectedRows() ?? []
-}
-
-function refreshCells() {
-  gridApi.value?.refreshCells()
-}
-
-defineExpose<DataGridExpose>({
-  api: gridApi.value,
-  exportCsv,
-  autoSizeColumns,
-  sizeColumnsToFit,
-  deselectAll,
-  getSelectedRows,
-  refreshCells,
+// Create a reactive context object
+const context = reactive({
+  get props() {
+    return {
+      ...props,
+      tableLayout: mergedTableLayout.value,
+      tableClassNames: mergedTableClassNames.value,
+    }
+  },
+  get table() {
+    return props.table
+  },
+  get recordCount() {
+    return props.recordCount
+  },
+  get isLoading() {
+    return props.isLoading
+  },
 })
+
+// Provide context
+provide(DATA_GRID_KEY, context)
 </script>
+
 <template>
-  <AgGridVue
-    :theme="theme"
-    :locale-text="localeText"
-    :row-data="rowData"
-    :column-defs="columnDefs"
-    :default-col-def="mergedDefaultColDef"
-    :loading="loading"
-    :class="'ag-theme-tailwind'"
-    :style="{ height: height }"
-    v-bind="{ ...gridOptions, ...attrs }"
-    @grid-ready="onGridReady"
-    @cell-value-changed="emit('cellValueChanged', $event)"
-    @sort-changed="emit('sortChanged', $event)"
-    @pagination-changed="emit('paginationChanged', $event)"
-    @row-clicked="emit('rowClicked', $event)"
-    @row-double-clicked="emit('rowDoubleClicked', $event)"
-    @selection-changed="emit('selectionChanged', $event)"
-    @filter-changed="emit('filterChanged', $event)"
-    @row-data-updated="emit('rowDataUpdated', $event)"
-    @first-data-rendered="emit('firstDataRendered', $event)"
-  />
+  <slot />
 </template>

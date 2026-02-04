@@ -1,4 +1,5 @@
 import type { ReouteLocationNormalized } from 'vue-router'
+import type { Component, VNode } from 'vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -11,11 +12,16 @@ declare module 'vue-router' {
 }
 
 declare module '@tanstack/vue-table' {
-  interface ColumnMeta<TData extends RowData, TValue> {
+  interface ColumnMeta<TData extends object, TValue> {
+    /** Título para mostrar en visibilidad */
     headerTitle?: string
+    /** Clases CSS para la celda del header */
     headerClassName?: string
+    /** Clases CSS para las celdas del body */
     cellClassName?: string
-    skeleton?: () => VNode
+    /** Componente skeleton para loading */
+    skeleton?: Component
+    /** Función que retorna componente para fila expandida */
     expandedContent?: (row: TData) => VNode
   }
 }

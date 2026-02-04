@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData">
+<script setup lang="ts" generic="TData extends object">
 import { computed } from 'vue'
 import type { Table } from '@tanstack/vue-table'
 import {
@@ -9,11 +9,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-interface DataTableColumnVisibilityProps {
+interface DataGridColumnVisibilityProps {
   table: Table<TData>
 }
 
-const props = defineProps<DataTableColumnVisibilityProps>()
+const props = defineProps<DataGridColumnVisibilityProps>()
 const columns = computed(() =>
   props.table
     .getAllColumns()

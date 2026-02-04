@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData extends object">
 import { computed, type CSSProperties } from 'vue'
 import { FlexRender, type Column, type Header, type Row, type Cell } from '@tanstack/vue-table'
-import { useDataTable } from '.'
+import { useDataGrid } from '.'
 import { cn } from '@/lib/utils'
 
 // Spacing variants using computed classes
@@ -28,7 +28,7 @@ function getPinningStyles<T>(column: Column<T>): CSSProperties {
   }
 }
 
-const { table, isLoading, props: tableProps } = useDataTable<TData>()
+const { table, isLoading, props: tableProps } = useDataGrid<TData>()
 
 const pagination = computed(() => table.getState().pagination)
 
@@ -40,12 +40,14 @@ const bodyCellSpacing = computed(() =>
   tableProps.tableLayout?.dense ? bodyCellSpacingClasses.dense : bodyCellSpacingClasses.default,
 )
 
+// Computed para contenido expandido (optimización)
+const expandedColumn = computed(() =>
+  table.getAllColumns().find((col) => col.columnDef.meta?.expandedContent),
+)
+
 // Helper functions for cell classes
 function getHeaderCellClasses(header: Header<TData, unknown>) {
   const { column } = header
-  // const isPinned = column.getIsPinned()
-  // const isLastLeftPinned = isPinned === 'left' && column.getIsLastColumn('left')
-  // const isFirstRightPinned = isPinned === 'right' && column.getIsFirstColumn('right')
 
   return cn(
     'relative h-10 text-left rtl:text-right align-middle font-normal text-accent-foreground [&:has([role=checkbox])]:pe-0',
@@ -86,10 +88,6 @@ function getHeaderCellDataAttributes(header: Header<TData, unknown>) {
 
 function getBodyCellClasses(cell: Cell<TData, unknown>) {
   const { column, row } = cell
-  // const isPinned = column.getIsPinned()
-  // const isLastLeftPinned = isPinned === 'left' && column.getIsLastColumn('left')
-  // const isFirstRightPinned = isPinned === 'right' && column.getIsFirstColumn('right')
-
   return cn(
     'align-middle',
     bodyCellSpacing.value,
@@ -195,7 +193,7 @@ function handleResetSize(column: Column<TData>) {
           <!-- Resize Handle -->
           <div
             v-if="tableProps.tableLayout?.columnsResizable && header.column.getCanResize()"
-            class="absolute top-0 h-full w-4 cursor-col-resize user-select-none touch-none -end-2 z-10 flex justify-center before:absolute before:w-px before:inset-y-0 before:bg-border before:-translate-x-px"
+            class="absolute top-0 h-full w-4 cursor-col-resize user-select-none touch-none -end-3 z-10 flex justify-center before:absolute before:w-px before:inset-y-0 before:bg-border before:-translate-x-px"
             @dblclick="handleResetSize(header.column)"
             @mousedown="(e) => handleResize(header, e)"
             @touchstart="(e) => handleResize(header, e)"
@@ -296,10 +294,13 @@ function handleResetSize(column: Column<TData>) {
           </tr>
           <!-- Expanded Row -->
           <tr
-            v-if="row.getIsExpanded()"
+            v-if="row.getIsExpanded() && expandedColumn?.columnDef.meta?.expandedContent"
             :class="cn(tableProps.tableLayout?.rowBorder && '[&:not(:last-child)>td]:border-b')"
           >
             <td :colspan="row.getVisibleCells().length">
+              <component :is="expandedColumn.columnDef.meta.expandedContent(row.original)" />
+            </td>
+            <!-- <td :colspan="row.getVisibleCells().length">
               <component
                 v-if="
                   table.getAllColumns().find((col) => col.columnDef.meta?.expandedContent)
@@ -312,7 +313,7 @@ function handleResetSize(column: Column<TData>) {
                     ?.columnDef.meta?.expandedContent?.(row.original)
                 "
               />
-            </td>
+            </td> -->
           </tr>
         </template>
       </template>

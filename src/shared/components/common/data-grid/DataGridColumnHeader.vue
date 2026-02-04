@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData extends object, TValue">
 import { computed, type VNode } from 'vue'
 import type { Column } from '@tanstack/vue-table'
-import { useDataTable } from '.'
+import { useDataGrid } from '.'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,14 +30,14 @@ import {
   Settings2,
 } from 'lucide-vue-next'
 
-interface DataTableColumnHeaderProps {
+interface DataGridColumnHeaderProps {
   column: Column<TData, TValue>
   title?: string
   pinnable?: boolean
   visibility?: boolean
 }
 
-const props = withDefaults(defineProps<DataTableColumnHeaderProps>(), {
+const props = withDefaults(defineProps<DataGridColumnHeaderProps>(), {
   title: '',
   pinnable: true,
   visibility: false,
@@ -48,7 +48,7 @@ const slots = defineSlots<{
   filter?: () => VNode
 }>()
 
-const { isLoading, table, props: tableProps, recordCount } = useDataTable<TData>()
+const { isLoading, table, props: tableProps, recordCount } = useDataGrid<TData>()
 
 // Move column function
 function moveColumn(direction: 'left' | 'right') {
@@ -133,7 +133,7 @@ const showSortButton = computed(
           </template>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent class="w-40" align="start">
+      <DropdownMenuContent class="w-48" align="start">
         <!-- Filter Slot -->
         <DropdownMenuLabel v-if="hasFilter">
           <slot name="filter" />

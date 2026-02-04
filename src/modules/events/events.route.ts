@@ -9,4 +9,12 @@ export const eventsRoutes: RouteRecordRaw[] = [
       title: 'Eventos',
     },
   },
+  {
+    path: '/events/authorizations',
+    name: 'event-authorizations',
+    component: () => import('@/modules/events/pages/Authorizations.vue'),
+    meta: {
+      title: 'Autorizaciones',
+    },
+  },
 ]

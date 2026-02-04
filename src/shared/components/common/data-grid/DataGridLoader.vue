@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useDataTable } from '.'
+import { useDataGrid } from '.'
 
-const { props: tableProps } = useDataTable()
+const { props: tableProps } = useDataGrid()
 </script>
 
 <template>

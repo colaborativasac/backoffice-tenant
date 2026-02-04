@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
 
-interface DataTableContainerProps {
+interface DataGridContainerProps {
   border?: boolean
   rounded?: boolean
   class?: string
 }
 
-const props = withDefaults(defineProps<DataTableContainerProps>(), {
+const props = withDefaults(defineProps<DataGridContainerProps>(), {
   border: true,
   rounded: true,
 })
@@ -17,12 +17,7 @@ const props = withDefaults(defineProps<DataTableContainerProps>(), {
   <div
     data-slot="data-grid"
     :class="
-      cn(
-        'grid w-full scrollable-x-auto',
-        border && 'border border-border',
-        rounded && 'rounded-lg',
-        props.class,
-      )
+      cn('grid w-full', border && 'border border-border', rounded && 'rounded-lg', props.class)
     "
   >
     <slot />

@@ -1,14 +1,14 @@
-<script setup lang="ts" generic="TData">
+<script setup lang="ts" generic="TData extends object">
 import type { Row } from '@tanstack/vue-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 
-interface DataTableRowSelectProps {
+interface DataGridRowSelectProps {
   row: Row<TData>
   size?: 'sm' | 'default' | 'lg'
 }
 
-const props = withDefaults(defineProps<DataTableRowSelectProps>(), {
+const props = withDefaults(defineProps<DataGridRowSelectProps>(), {
   size: 'sm',
 })
 </script>

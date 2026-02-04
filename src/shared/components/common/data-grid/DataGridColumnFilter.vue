@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts" generic="TData extends object, TValue">
 import { computed, type Component } from 'vue'
 import type { Column } from '@tanstack/vue-table'
 import { cn } from '@/lib/utils'
@@ -23,13 +23,13 @@ interface FilterOption {
   icon?: Component
 }
 
-interface DataTableColumnFilterProps {
+interface DataGridColumnFilterProps {
   column?: Column<TData, TValue>
   title?: string
   options: FilterOption[]
 }
 
-const props = defineProps<DataTableColumnFilterProps>()
+const props = defineProps<DataGridColumnFilterProps>()
 
 const facets = computed(() => props.column?.getFacetedUniqueValues())
 
